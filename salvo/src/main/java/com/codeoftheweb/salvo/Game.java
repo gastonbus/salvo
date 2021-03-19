@@ -25,6 +25,10 @@ public class Game {
         return dateTime;
     }
 
+    /*ublic String getPlayers() {
+        return xxxxxxxxxxx;
+    }*/
+
     public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
     }

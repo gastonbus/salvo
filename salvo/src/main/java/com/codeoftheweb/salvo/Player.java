@@ -25,6 +25,10 @@ public class Player {
         return userName;
     }
 
+    /*public String getGames() {
+        return xxxxxxxx;
+    }*/
+
     public void setUserName(String userName) {
         this.userName = userName;
     }
