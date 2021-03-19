@@ -13,20 +13,19 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
     private long id;
-    private String date;
+    private String dateTime;
 
     public Game() { }
 
-    public Game(String date) {
-        this.date = date;
+    public Game(String dateTime) {
+        this.dateTime = dateTime;
     }
 
-    public String getDate() {
-        return date;
+    public String getDateTime() {
+        return dateTime;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
     }
-
 }
