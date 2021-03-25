@@ -3,28 +3,29 @@ package com.codeoftheweb.salvo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.List;
+import java.util.Set;
+
+import static java.util.stream.Collectors.toSet;
 
 @RestController
 @RequestMapping("/api")
-
 public class SalvoController {
 
-    /*@Autowired
- http://localhost:8080/api/games   private PlayerRepository players;
-
-    @RequestMapping("/players")
-    public List<Player> getPlayers() {
-        return players.findAll();
-    }*/
+    @Autowired
+    private PlayerRepository playerRepository;
 
     @Autowired
-    private GameRepository games;
+    private GameRepository gameRepository;
+
+    @RequestMapping("/players")
+    public List<Player> getPlayers(){
+        return playerRepository.findAll();
+    }
 
     @RequestMapping("/games")
-    public List<Game> getGames() {
-        return games.findAll();
+    public Set<Long> getGames() {
+        return gameRepository.findAll().stream().map(Game::getId).collect(toSet());
     }
 }
 

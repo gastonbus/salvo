@@ -57,6 +57,7 @@ public class Game {
         this.dateTime = dateTime;
     }
 
+    @JsonIgnore
     public Set<GamePlayer> getGamePlayers() {
         return gamePlayers;
     }
