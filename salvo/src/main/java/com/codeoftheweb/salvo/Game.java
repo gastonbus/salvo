@@ -26,17 +26,12 @@ public class Game {
 
     //Constructors
     public Game() { }
-    public Game(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
-    }
 
-    /*public void addGamePlayer(GamePlayer gamePlayer) {
-        gamePlayer.setGame(this);
-        gamePlayers.add(gamePlayer);
-    }*/
+    public Game(LocalDateTime dateTime) { this.dateTime = dateTime; }
 
     @JsonIgnore
     public List<Player> getPlayers() {
+
         return gamePlayers.stream().map(sub -> sub.getPlayer()).collect(toList());
     }
 

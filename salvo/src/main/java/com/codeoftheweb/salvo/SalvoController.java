@@ -27,21 +27,16 @@ public class SalvoController {
         return playerRepository.findAll();
     }
 
-    /* @RequestMapping("/games")
-    public Set<Long> getGames() {
-        return gameRepository.findAll().stream().map(Game::getId).collect(toSet());
-    }*/
-
     @RequestMapping("/games")
-    public List<Map<String, Object>> getGames() {
-        return gameRepository.findAll().stream().map(this::makeGameDTO).collect(toList());
+    public Set<Map<String, Object>> getGames() {
+        return gameRepository.findAll().stream().map(this::makeGameDTO).collect(toSet());
     }
 
     public Map<String, Object> makeGameDTO(Game game){
         Map<String, Object> dto = new LinkedHashMap<String, Object>();
         dto.put("id", game.getId());
         dto.put("date", game.getDateTime());
-        dto.put("gamePlayer", game.getGamePlayers().stream().map(this::makeGamePlayerDTO).collect(toSet()));
+        dto.put("gamePlayers", game.getGamePlayers().stream().map(this::makeGamePlayerDTO).collect(toSet()));
         return dto;
     }
 
