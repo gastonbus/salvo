@@ -25,14 +25,10 @@ public class Player {
 
     //Constructors
     public Player() { }
+
     public Player(String userName) {
         this.userName = userName;
     }
-
-    /*public void addGamePlayer(GamePlayer gamePlayer) {
-        gamePlayer.setPlayer(this);
-        gamePlayers.add(gamePlayer);
-    }*/
 
     @JsonIgnore
     public List<Game> getGames() {

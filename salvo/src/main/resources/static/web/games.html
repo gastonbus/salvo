@@ -11,7 +11,11 @@
         <h1>Salvo!</h1>
         <nav>
             <ol>
-                <li v-for="game in games">{{ game.date }} Players: {{ game.gamePlayers[0].Player.email }}, {{ game.gamePlayers[1].Player.email }}</li>
+                <li v-for="game in games">{{ game.date }}
+                    <ul>
+                        <li v-for="gamePlayer in game.gamePlayers">{{ gamePlayer.Player.email }}</li>
+                    </ul>
+                </li>
             </ol>
         </nav>
     </div>

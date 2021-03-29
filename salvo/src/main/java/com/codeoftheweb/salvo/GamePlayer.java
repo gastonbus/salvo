@@ -24,8 +24,8 @@ public class GamePlayer {
     private Game game;
 
     //Constructors
-    public GamePlayer() {
-    }
+    public GamePlayer() { }
+
     public GamePlayer(LocalDateTime dateTime, Player player, Game game) {
         this.dateTime = dateTime;
         this.player = player;
