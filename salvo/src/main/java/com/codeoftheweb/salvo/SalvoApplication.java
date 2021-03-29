@@ -5,8 +5,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @SpringBootApplication
 public class SalvoApplication {
@@ -20,7 +21,8 @@ public class SalvoApplication {
 	public CommandLineRunner initData(
 			PlayerRepository playerRepository,
 			GameRepository gameRepository,
-			GamePlayerRepository gamePlayerRepository
+			GamePlayerRepository gamePlayerRepository,
+			ShipRepository shipRepository
 	) {
 		return (args) -> {
 
@@ -37,17 +39,37 @@ public class SalvoApplication {
 			Game game1 = new Game(LocalDateTime.now());
 			Game game2 = new Game(LocalDateTime.now().plusHours(1));
 			Game game3 = new Game(LocalDateTime.now().plusHours(2));
+			Game game4 = new Game(LocalDateTime.now().plusHours(3));
+			Game game5 = new Game(LocalDateTime.now().plusHours(4));
+			Game game6 = new Game(LocalDateTime.now().plusHours(5));
+			Game game7 = new Game(LocalDateTime.now().plusHours(6));
+			Game game8 = new Game(LocalDateTime.now().plusHours(7));
 
 			gameRepository.save(game1);
 			gameRepository.save(game2);
 			gameRepository.save(game3);
+			gameRepository.save(game4);
+			gameRepository.save(game5);
+			gameRepository.save(game6);
+			gameRepository.save(game7);
+			gameRepository.save(game8);
+
+			GamePlayer gamePlayer1 = new GamePlayer(LocalDateTime.now(), player1, game1);
+			GamePlayer gamePlayer2 = new GamePlayer(LocalDateTime.now(), player2, game2);
+			GamePlayer gamePlayer3 = new GamePlayer(LocalDateTime.now(), player3, game1);
+			GamePlayer gamePlayer4 = new GamePlayer(LocalDateTime.now(), player4, game2);
+			GamePlayer gamePlayer5 = new GamePlayer(LocalDateTime.now(), player4, game3);
 
 
-			gamePlayerRepository.save(new GamePlayer(LocalDateTime.now(), player1, game1));
-			gamePlayerRepository.save(new GamePlayer(LocalDateTime.now(), player2, game2));
-			gamePlayerRepository.save(new GamePlayer(LocalDateTime.now(), player3, game1));
-			gamePlayerRepository.save(new GamePlayer(LocalDateTime.now(), player4, game2));
-			gamePlayerRepository.save(new GamePlayer(LocalDateTime.now(), player4, game3));
+			gamePlayerRepository.save(gamePlayer1);
+			gamePlayerRepository.save(gamePlayer2);
+			gamePlayerRepository.save(gamePlayer3);
+			gamePlayerRepository.save(gamePlayer4);
+			gamePlayerRepository.save(gamePlayer5);
+
+			shipRepository.save(new Ship(gamePlayer1, "destroyer", Arrays.asList("H2", "H3", "H4")));
+			shipRepository.save(new Ship(gamePlayer1, "destroyer", Arrays.asList("H2", "H3", "H4")));
+			shipRepository.save(new Ship(gamePlayer3, "battleship", Arrays.asList("H2", "H3", "H4")));
 
 		};
 	}
