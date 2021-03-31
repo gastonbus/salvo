@@ -53,5 +53,13 @@ public class Ship {
     public void setGamePlayer(GamePlayer gamePlayer) {
         this.gamePlayer = gamePlayer;
     }
+
+    public String getType() {
+        return type;
+    }
+
+    public List<String> getLocations() {
+        return locations;
+    }
 }
 

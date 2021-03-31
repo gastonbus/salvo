@@ -55,8 +55,8 @@ public class SalvoApplication {
 			gameRepository.save(game8);
 
 			GamePlayer gamePlayer1 = new GamePlayer(LocalDateTime.now(), player1, game1);
-			GamePlayer gamePlayer2 = new GamePlayer(LocalDateTime.now(), player2, game2);
-			GamePlayer gamePlayer3 = new GamePlayer(LocalDateTime.now(), player3, game1);
+			GamePlayer gamePlayer2 = new GamePlayer(LocalDateTime.now(), player2, game1);
+			GamePlayer gamePlayer3 = new GamePlayer(LocalDateTime.now(), player3, game2);
 			GamePlayer gamePlayer4 = new GamePlayer(LocalDateTime.now(), player4, game2);
 			GamePlayer gamePlayer5 = new GamePlayer(LocalDateTime.now(), player4, game3);
 
@@ -67,9 +67,17 @@ public class SalvoApplication {
 			gamePlayerRepository.save(gamePlayer4);
 			gamePlayerRepository.save(gamePlayer5);
 
-			shipRepository.save(new Ship(gamePlayer1, "destroyer", Arrays.asList("H2", "H3", "H4")));
-			shipRepository.save(new Ship(gamePlayer1, "destroyer", Arrays.asList("H2", "H3", "H4")));
-			shipRepository.save(new Ship(gamePlayer3, "battleship", Arrays.asList("H2", "H3", "H4")));
+			shipRepository.save(new Ship(gamePlayer1, "Carrier", Arrays.asList("C4", "D4", "E4", "F4", "G4")));
+			shipRepository.save(new Ship(gamePlayer1, "Battleship", Arrays.asList("E6", "E7", "E8", "E9")));
+			shipRepository.save(new Ship(gamePlayer1, "Submarine", Arrays.asList("G1", "H1", "I1")));
+			shipRepository.save(new Ship(gamePlayer1, "Destroyer", Arrays.asList("J5", "J6", "J7")));
+			shipRepository.save(new Ship(gamePlayer1, "Patrol Boat", Arrays.asList("H10", "I10")));
+
+			shipRepository.save(new Ship(gamePlayer2, "Carrier", Arrays.asList("H5", "H6", "H7", "H8", "H9")));
+			shipRepository.save(new Ship(gamePlayer2, "Battleship", Arrays.asList("C1", "D1", "E1", "F1")));
+			shipRepository.save(new Ship(gamePlayer2, "Submarine", Arrays.asList("A5", "A6", "A7")));
+			shipRepository.save(new Ship(gamePlayer2, "Destroyer", Arrays.asList("A10", "B10", "C10")));
+			shipRepository.save(new Ship(gamePlayer2, "Patrol Boat", Arrays.asList("J2", "J3")));
 
 		};
 	}
