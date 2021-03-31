@@ -48,11 +48,6 @@ public class SalvoApplication {
 			gameRepository.save(game1);
 			gameRepository.save(game2);
 			gameRepository.save(game3);
-			gameRepository.save(game4);
-			gameRepository.save(game5);
-			gameRepository.save(game6);
-			gameRepository.save(game7);
-			gameRepository.save(game8);
 
 			GamePlayer gamePlayer1 = new GamePlayer(LocalDateTime.now(), player1, game1);
 			GamePlayer gamePlayer2 = new GamePlayer(LocalDateTime.now(), player2, game1);
