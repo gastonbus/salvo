@@ -6,10 +6,6 @@ var app = new Vue({
         columns: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
         cellsWithShips: [],
     },
-    methods: {
-        setColorToCells: function() {
-        }
-    }
 });
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -40,13 +36,31 @@ fetch('http://localhost:8080/api/game_view/' + gamePlayerId)
                     break;
             }
         }
-        console.log(app.cellsWithShips.battleship)
+
+        //Paint battleship cells
         for (let i = 0; i < app.cellsWithShips.battleship.length; i++) {
-                       
+            document.getElementById(app.cellsWithShips.battleship[i]).style.backgroundColor = "red";
         }
+
+        //Paint submarine cells
+        for (let i = 0; i < app.cellsWithShips.submarine.length; i++) {
+            document.getElementById(app.cellsWithShips.submarine[i]).style.backgroundColor = "blue";
+        }
+
+        //Paint destroyer cells
+        for (let i = 0; i < app.cellsWithShips.destroyer.length; i++) {
+            document.getElementById(app.cellsWithShips.destroyer[i]).style.backgroundColor = "green";
+        }
+
+        //Paint carrier cells
+        for (let i = 0; i < app.cellsWithShips.carrier.length; i++) {
+            document.getElementById(app.cellsWithShips.carrier[i]).style.backgroundColor = "orange";
+        }
+
+        //Paint patrolBoat cells
+        for (let i = 0; i < app.cellsWithShips.patrolBoat.length; i++) {
+            document.getElementById(app.cellsWithShips.patrolBoat[i]).style.backgroundColor = "yellow";
+        }
+        
+        document.getElementById("main-title").innerText = "Battle between " + app.game[0].gamePlayers.find(element => element.id == gamePlayerId).player.email + " (you) and " + app.game[0].gamePlayers.find(element => element.id != gamePlayerId).player.email + "."; 
     })
-    
-
-
-
-
