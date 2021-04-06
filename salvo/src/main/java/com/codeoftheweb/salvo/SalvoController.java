@@ -39,8 +39,8 @@ public class SalvoController {
     }
 
     @RequestMapping("/game_view/{gamePlayerId}")
-    public Set<Map<String, Object>> getGame(@PathVariable Long gamePlayerId) {
-        return gamePlayerRepository.findById(gamePlayerId).stream().map(this::makeGameViewDTO).collect(toSet());
+    public Map<String, Object> getGame(@PathVariable Long gamePlayerId) {
+        return makeGameViewDTO(gamePlayerRepository.findById(gamePlayerId).get());
     }
 
     public Map<String, Object> makeGameDTO(Game game){

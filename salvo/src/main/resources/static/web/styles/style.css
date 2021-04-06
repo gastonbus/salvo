@@ -14,3 +14,23 @@ td, th {
 #empty-cell {
     background-color: rgb(128, 128, 128);
 }
+
+.battleship {
+    background-color: red;
+}
+
+.submarine {
+    background-color: blue;
+}
+
+.destroyer{
+    background-color: green;
+}
+
+.carrier{
+    background-color: orange;
+}
+
+.patrolBoat {
+    background-color: yellow;
+}

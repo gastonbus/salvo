@@ -35,6 +35,12 @@ public class Player {
         return gamePlayers.stream().map(sub -> sub.getGame()).collect(toList());
     }
 
+    @JsonIgnore
+    public Set<GamePlayer> getGamePlayer() {
+        return gamePlayers;
+    }
+
+
     //Setters and Getters
     public long getId() {
         return id;
@@ -52,9 +58,5 @@ public class Player {
         this.userName = userName;
     }
 
-    @JsonIgnore
-    public Set<GamePlayer> getGamePlayer() {
-        return gamePlayers;
-    }
 }
 

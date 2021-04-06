@@ -31,8 +31,12 @@ public class Game {
 
     @JsonIgnore
     public List<Player> getPlayers() {
-
         return gamePlayers.stream().map(sub -> sub.getPlayer()).collect(toList());
+    }
+
+    @JsonIgnore
+    public Set<GamePlayer> getGamePlayers() {
+        return gamePlayers;
     }
 
     //Setters and Getters
@@ -52,8 +56,4 @@ public class Game {
         this.dateTime = dateTime;
     }
 
-    @JsonIgnore
-    public Set<GamePlayer> getGamePlayers() {
-        return gamePlayers;
-    }
 }
