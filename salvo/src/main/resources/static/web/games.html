@@ -13,7 +13,7 @@
             <ol>
                 <li v-for="game in games">{{ game.date }}
                     <ul>
-                        <li v-for="gamePlayer in game.gamePlayers">{{ gamePlayer.Player.email }}</li>
+                        <li v-for="gamePlayer in game.gamePlayers">{{ gamePlayer.player.email }}</li>
                     </ul>
                 </li>
             </ol>

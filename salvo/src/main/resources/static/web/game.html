@@ -30,13 +30,13 @@
                         <tbody>
                             <tr v-for="row in rows">
                                 <th>{{row}}</th>
-                                <td v-for="column in columns" v-bind:id="row + column"></td>
+                                <td v-for="column in columns" v-bind:id="'ships-' + row + column"></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="col-5">
-                    <p>This is your shot's board</p>
+                    <p>This is your salvo's board</p>
                     <table>
                         <thead>
                             <tr>
@@ -47,7 +47,7 @@
                         <tbody>
                             <tr v-for="row in rows">
                                 <th>{{row}}</th>
-                                <td v-for="column in columns" v-bind:id="row + column"></td>
+                                <td v-for="column in columns" v-bind:id="'salvoes-' + row + column"></td>
                             </tr>
                         </tbody>
                     </table>

@@ -8,7 +8,8 @@ table {
 }
 
 td {
-    width: 9.09%;
+    width: 9.0909%;
+    min-height: 9.0909%;
 }
 
 p {
@@ -48,4 +49,24 @@ h1 {
 
 .patrolBoat {
     background-color: yellow;
+}
+
+.firedSalvoes {
+    background-color: aqua;
+    margin: 2px 2px 2px 2px;
+    font-size: 12px;
+}
+
+.opponentSalvoes {
+    background-color: rgb(0, 0, 0);
+    margin: 2px 2px 2px 2px;
+    font-size: 12px;
+    color: white;
+}
+
+.opponentSuccessfulShot {
+    background-color: gray;
+    margin: 2px 2px 2px 2px;
+    font-size: 12px;
+    color: white;
 }

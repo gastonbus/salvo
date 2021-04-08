@@ -13,6 +13,9 @@ var app = new Vue({
                 email: "",
             }
         },
+        playerASalvoes: null,
+        playerBSalvoes: null,
+        playerAShipsAux: [],
     },
     methods: {
         savePlayers: function () {
@@ -26,39 +29,65 @@ var app = new Vue({
                         app.cellsWithShips.battleship = app.game.ships[i].locations;
                         //Paint battleship cells:
                         for (let i = 0; i < app.cellsWithShips.battleship.length; i++) {
-                            document.getElementById(app.cellsWithShips.battleship[i]).className = "battleship";
+                            app.playerAShipsAux.push(app.cellsWithShips.battleship[i]);
+                            document.getElementById('ships-' + app.cellsWithShips.battleship[i]).className = "battleship";
                         }
                         break;
                     case "Submarine":
                         app.cellsWithShips.submarine = app.game.ships[i].locations;
                         //Paint submarine cells:
                         for (let i = 0; i < app.cellsWithShips.submarine.length; i++) {
-                            document.getElementById(app.cellsWithShips.submarine[i]).className = "submarine";
+                            app.playerAShipsAux.push(app.cellsWithShips.submarine[i]);
+                            document.getElementById('ships-' + app.cellsWithShips.submarine[i]).className = "submarine";
                         }
                         break;
                     case "Destroyer":
                         app.cellsWithShips.destroyer = app.game.ships[i].locations;
                         //Paint destroyer cells:
                         for (let i = 0; i < app.cellsWithShips.destroyer.length; i++) {
-                            document.getElementById(app.cellsWithShips.destroyer[i]).className = "destroyer";
+                            app.playerAShipsAux.push(app.cellsWithShips.destroyer[i]);
+                            document.getElementById('ships-' + app.cellsWithShips.destroyer[i]).className = "destroyer";
                         }
                         break;
                     case "Carrier":
                         app.cellsWithShips.carrier = app.game.ships[i].locations;
                         //Paint carrier cells:
                         for (let i = 0; i < app.cellsWithShips.carrier.length; i++) {
-                            document.getElementById(app.cellsWithShips.carrier[i]).className = "carrier";
+                            app.playerAShipsAux.push(app.cellsWithShips.carrier[i]);
+                            document.getElementById('ships-' + app.cellsWithShips.carrier[i]).className = "carrier";
                         }
                         break;
                     case "Patrol Boat":
                         app.cellsWithShips.patrolBoat = app.game.ships[i].locations;
                         //Paint patrolBoat cells:
                         for (let i = 0; i < app.cellsWithShips.patrolBoat.length; i++) {
-                            document.getElementById(app.cellsWithShips.patrolBoat[i]).className = "patrolBoat";
+                            app.playerAShipsAux.push(app.cellsWithShips.patrolBoat[i]);
+                            document.getElementById('ships-' + app.cellsWithShips.patrolBoat[i]).className = "patrolBoat";
                         }
                         break;
                     default:
                         break;
+                }
+            }
+        },
+        showFiredSalvoes: function() {
+            app.playerASalvoes = app.game.salvoes.filter(elem => elem.playerId == app.players.playerA.id);
+            for (let j = 0; j < app.playerASalvoes.length; j++) {
+                for (let i = 0; i < app.playerASalvoes[j].locations.length; i++) {
+                    document.getElementById('salvoes-' + app.playerASalvoes[j].locations[i]).innerHTML = "<div class='firedSalvoes'>" + app.playerASalvoes[j].turn + "</div>";
+                }
+            }
+        },
+        showOpponentSalvoes: function() {
+            app.playerBSalvoes = app.game.salvoes.filter(elem => elem.playerId == app.players.playerB.id);
+   
+            for (let j = 0; j < app.playerBSalvoes.length; j++) {
+                for (let i = 0; i < app.playerBSalvoes[j].locations.length; i++) {
+                    if (app.playerAShipsAux.includes(app.playerBSalvoes[j].locations[i])) {
+                        document.getElementById('ships-' + app.playerBSalvoes[j].locations[i]).innerHTML = "<div class='opponentSuccessfulShot'>" + app.playerBSalvoes[j].turn + "</div>";                     
+                    } else {
+                        document.getElementById('ships-' + app.playerBSalvoes[j].locations[i]).innerHTML = "<div class='opponentSalvoes'>" + app.playerBSalvoes[j].turn + "</div>";
+                    }
                 }
             }
         }
@@ -74,4 +103,6 @@ fetch('http://localhost:8080/api/game_view/' + gamePlayerId)
         app.game = data;
         app.savePlayers();
         app.locateShips();
+        app.showFiredSalvoes();
+        app.showOpponentSalvoes();
     })

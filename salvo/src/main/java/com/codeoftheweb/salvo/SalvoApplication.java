@@ -6,8 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
 
 @SpringBootApplication
 public class SalvoApplication {
