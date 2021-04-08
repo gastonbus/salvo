@@ -6,6 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
 @SpringBootApplication
 public class SalvoApplication {
@@ -20,7 +22,8 @@ public class SalvoApplication {
 			PlayerRepository playerRepository,
 			GameRepository gameRepository,
 			GamePlayerRepository gamePlayerRepository,
-			ShipRepository shipRepository
+			ShipRepository shipRepository,
+			SalvoRepository salvoRepository
 	) {
 		return (args) -> {
 
@@ -72,6 +75,12 @@ public class SalvoApplication {
 			shipRepository.save(new Ship(gamePlayer2, "Destroyer", Arrays.asList("A10", "B10", "C10")));
 			shipRepository.save(new Ship(gamePlayer2, "Patrol Boat", Arrays.asList("J2", "J3")));
 
+			salvoRepository.save(new Salvo(gamePlayer1, 1, Arrays.asList("B1", "B7", "E6", "F3", "F8")));
+			salvoRepository.save(new Salvo(gamePlayer2, 1, Arrays.asList("B2", "B8", "E5", "H2", "J8")));
+			salvoRepository.save(new Salvo(gamePlayer1, 2, Arrays.asList("B4", "C10", "F3", "H1", "H5")));
+			salvoRepository.save(new Salvo(gamePlayer2, 2, Arrays.asList("C4", "E10", "G1", "G10", "J4")));
+			salvoRepository.save(new Salvo(gamePlayer1, 3, Arrays.asList("B9", "D1", "D3", "D5", "H8")));
+			salvoRepository.save(new Salvo(gamePlayer2, 3, Arrays.asList("B6", "B10", "D2", "G6", "H9")));
 		};
 	}
 }

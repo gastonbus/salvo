@@ -3,12 +3,27 @@ table, td, th {
 }
 
 table {
-    width: 40%;
+    width: 100%;
     text-align: center;
 }
 
-td, th {
-    width: 30px;
+td {
+    width: 9.09%;
+}
+
+p {
+    text-align: center;
+    font-size: 24px;
+    margin-top: 30px;
+}
+
+h1 {
+    text-align: center;
+}
+
+.userName {
+    font-weight: bold;
+    color: darkred;
 }
 
 #empty-cell {
