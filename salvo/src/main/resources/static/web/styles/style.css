@@ -1,3 +1,7 @@
+body {
+    background-image: url(../img/bg_01.jpg);
+}
+
 table, td, th {
     border: 1px solid black;
 }
@@ -5,11 +9,12 @@ table, td, th {
 table {
     width: 100%;
     text-align: center;
+    background-color: rgb(54, 54, 54);
 }
 
-td {
+td, th {
     width: 9.0909%;
-    min-height: 9.0909%;
+    height: 9.0909%;
 }
 
 p {
@@ -53,7 +58,7 @@ h1 {
 
 .firedSalvoes {
     background-color: aqua;
-    margin: 2px 2px 2px 2px;
+    margin: 3px 3px 3px 3px;
     font-size: 12px;
 }
 

@@ -80,7 +80,6 @@ var app = new Vue({
         },
         showOpponentSalvoes: function() {
             app.playerBSalvoes = app.game.salvoes.filter(elem => elem.playerId == app.players.playerB.id);
-   
             for (let j = 0; j < app.playerBSalvoes.length; j++) {
                 for (let i = 0; i < app.playerBSalvoes[j].locations.length; i++) {
                     if (app.playerAShipsAux.includes(app.playerBSalvoes[j].locations[i])) {
