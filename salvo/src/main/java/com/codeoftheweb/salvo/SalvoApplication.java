@@ -21,7 +21,8 @@ public class SalvoApplication {
 			GameRepository gameRepository,
 			GamePlayerRepository gamePlayerRepository,
 			ShipRepository shipRepository,
-			SalvoRepository salvoRepository
+			SalvoRepository salvoRepository,
+			ScoreRepository scoreRepository
 	) {
 		return (args) -> {
 
@@ -35,7 +36,7 @@ public class SalvoApplication {
 			playerRepository.save(player3);
 			playerRepository.save(player4);
 
-			Game game1 = new Game(LocalDateTime.now());
+			Game game1 = new Game(LocalDateTime	.now());
 			Game game2 = new Game(LocalDateTime.now().plusHours(1));
 			Game game3 = new Game(LocalDateTime.now().plusHours(2));
 			//Game game4 = new Game(LocalDateTime.now().plusHours(3));
@@ -53,7 +54,6 @@ public class SalvoApplication {
 			GamePlayer gamePlayer3 = new GamePlayer(LocalDateTime.now(), player3, game2);
 			GamePlayer gamePlayer4 = new GamePlayer(LocalDateTime.now(), player4, game2);
 			GamePlayer gamePlayer5 = new GamePlayer(LocalDateTime.now(), player4, game3);
-
 
 			gamePlayerRepository.save(gamePlayer1);
 			gamePlayerRepository.save(gamePlayer2);
@@ -79,6 +79,12 @@ public class SalvoApplication {
 			salvoRepository.save(new Salvo(gamePlayer2, 2, Arrays.asList("C4", "E10", "G1", "G10", "J4")));
 			salvoRepository.save(new Salvo(gamePlayer1, 3, Arrays.asList("B9", "D1", "D3", "D5", "H8")));
 			salvoRepository.save(new Salvo(gamePlayer2, 3, Arrays.asList("B6", "B10", "D2", "G6", "H9")));
+
+			scoreRepository.save(new Score(1.5, LocalDateTime.now(), game1, player1));
+			scoreRepository.save(new Score(2, LocalDateTime.now(), game1, player2));
+//			scoreRepository.save(new Score(3, LocalDateTime.now(), game2, player3));
+//			scoreRepository.save(new Score(1, LocalDateTime.now(), game2, player4));
+//			scoreRepository.save(new Score(2.5, LocalDateTime.now(), game3, player4));
 		};
 	}
 }

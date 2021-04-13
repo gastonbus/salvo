@@ -4,6 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Entity
@@ -38,6 +39,10 @@ public class GamePlayer {
         this.dateTime = dateTime;
         this.player = player;
         this.game = game;
+    }
+
+    public Optional<Score> getScore() {
+        return player.getScore(game);
     }
 
     //Setters and Getters

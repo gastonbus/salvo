@@ -29,7 +29,7 @@ public class SalvoController {
     private ShipRepository shipRepository;
 
     @RequestMapping("/players")
-    public List<Player> getPlayers(){
+    public List<Player> getPlayers() {
         return playerRepository.findAll();
     }
 
@@ -43,7 +43,7 @@ public class SalvoController {
         return makeGameViewDTO(gamePlayerRepository.findById(gamePlayerId).get());
     }
 
-    public Map<String, Object> makeGameDTO(Game game){
+    public Map<String, Object> makeGameDTO(Game game) {
         Map<String, Object> dto = new LinkedHashMap<String, Object>();
         dto.put("id", game.getId());
         dto.put("date", game.getDateTime());
@@ -51,21 +51,8 @@ public class SalvoController {
         return dto;
     }
 
-    private Map<String, Object> makeGamePlayerDTO(GamePlayer gamePlayer){
-        Map<String, Object> dto = new LinkedHashMap<String, Object>();
-        dto.put("id", gamePlayer.getId());
-        dto.put("player", makePlayerDTO(gamePlayer.getPlayer()));
-        return dto;
-    }
-
-    private Map<String, Object> makePlayerDTO(Player player){
-        Map<String, Object> dto = new LinkedHashMap<String, Object>();
-        dto.put("id", player.getId());
-        dto.put("email", player.getUserName());
-        return dto;
-    }
-
-    public Map<String, Object> makeGameViewDTO(GamePlayer gamePlayer){
+    //game_view
+    public Map<String, Object> makeGameViewDTO(GamePlayer gamePlayer) {
         Map<String, Object> dto = new LinkedHashMap<String, Object>();
         dto.put("id", gamePlayer.getGame().getId());
         dto.put("date", gamePlayer.getGame().getDateTime());
@@ -75,13 +62,32 @@ public class SalvoController {
         return dto;
     }
 
-    private Map<String, Object> makeShipDTO(Ship ship){
+    //game_view/gamePlayer
+    private Map<String, Object> makeGamePlayerDTO(GamePlayer gamePlayer) {
+        Map<String, Object> dto = new LinkedHashMap<String, Object>();
+        dto.put("id", gamePlayer.getId());
+        dto.put("player", makePlayerDTO(gamePlayer.getPlayer()));
+        dto.put("score", gamePlayer.getScore().map(Score::getScore).orElse(null));
+        return dto;
+    }
+
+    //game_view/gamePlayer/player
+    private Map<String, Object> makePlayerDTO(Player player) {
+        Map<String, Object> dto = new LinkedHashMap<String, Object>();
+        dto.put("id", player.getId());
+        dto.put("email", player.getUserName());
+        return dto;
+    }
+
+    //game_view/gamePlayer/ships
+    private Map<String, Object> makeShipDTO(Ship ship) {
         Map<String, Object> dto = new LinkedHashMap<String, Object>();
         dto.put("type", ship.getType());
         dto.put("locations", ship.getLocations());
         return dto;
     }
 
+    //game_view/gamePlayer/salvoes
     private Map<String, Object> makeSalvoDTO(Salvo salvo) {
         Map<String, Object> dto = new LinkedHashMap<String, Object>();
         dto.put("playerId", salvo.getGamePlayer().getPlayer().getId());
