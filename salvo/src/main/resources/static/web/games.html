@@ -14,9 +14,9 @@
                 <div class="col-12">
                     <nav>
                         <ol>
-                            <li v-for="game in games">{{ game.date }}
+                            <li v-for="game in games">{{game.date}}
                                 <ul>
-                                    <li v-for="gamePlayer in game.gamePlayers">{{ gamePlayer.player.email }}</li>
+                                    <li v-for="gamePlayer in game.gamePlayers">{{gamePlayer.player.email}}</li>
                                 </ul>
                             </li>
                         </ol>
@@ -34,7 +34,7 @@
                                 <th>Player</th>
                                 <th>Total Score</th>
                                 <th>Wins</th>
-                                <th>Loses</th>
+                                <th>losses</th>
                                 <th>Ties</th>
                             </tr>
                         </thead>
@@ -43,7 +43,7 @@
                                 <td>{{player.email}}</td>
                                 <td>{{player.scores.totalScore}}</td>
                                 <td>{{player.scores.wins}}</td>
-                                <td>{{player.scores.loses}}</td>
+                                <td>{{player.scores.losses}}</td>
                                 <td>{{player.scores.ties}}</td>
                             </tr>
                         </tbody>

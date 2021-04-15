@@ -17,12 +17,12 @@ public class SalvoApplication {
 
 	@Bean
 	public CommandLineRunner initData(
-			PlayerRepository playerRepository,
-			GameRepository gameRepository,
-			GamePlayerRepository gamePlayerRepository,
-			ShipRepository shipRepository,
-			SalvoRepository salvoRepository,
-			ScoreRepository scoreRepository
+		PlayerRepository playerRepository,
+		GameRepository gameRepository,
+		GamePlayerRepository gamePlayerRepository,
+		ShipRepository shipRepository,
+		SalvoRepository salvoRepository,
+		ScoreRepository scoreRepository
 	) {
 		return (args) -> {
 
