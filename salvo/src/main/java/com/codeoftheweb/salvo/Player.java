@@ -45,7 +45,7 @@ public class Player {
     }
 
     public Optional<Score> getScore(Game game) {
-        return getScores().stream().filter(score -> score.getGame().equals(game)).findFirst();
+        return scores.stream().filter(score -> score.getGame().equals(game)).findFirst();
     }
 
     //Setters and Getters
