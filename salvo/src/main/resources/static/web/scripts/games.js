@@ -23,9 +23,9 @@ var app = new Vue({
                             if (gamePlayer.score == 1) {
                                 player.scores.wins++;
                             } else if (gamePlayer.score == 0) {
-                                (player.scores.losses)++;
+                                player.scores.losses++;
                             } else if (gamePlayer.score == 0.5) {
-                                (player.scores.ties)++;
+                                player.scores.ties++;
                             }
                             player.scores.totalScore += gamePlayer.score;
                         };
@@ -39,6 +39,7 @@ var app = new Vue({
                 .then(data => {
                     app.games = data;
                     app.generatePlayersData();
+                    console.log(app.players);
                 });
         }
     },
@@ -46,3 +47,22 @@ var app = new Vue({
         this.getScoresData();
     }
 })
+
+function login(evt) {
+  evt.preventDefault();
+  var form = evt.target.form;
+  $.post("/api/login", 
+         { 
+            userName: form["username"].value,
+            password: form["password"].value
+        })
+   .done()
+   .fail();
+}
+
+function logout(evt) {
+  evt.preventDefault();
+  $.post("/api/logout")
+   .done()
+   .fail();
+}

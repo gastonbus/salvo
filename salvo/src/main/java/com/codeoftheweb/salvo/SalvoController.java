@@ -1,9 +1,7 @@
 package com.codeoftheweb.salvo;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -28,10 +26,32 @@ public class SalvoController {
     @Autowired
     private ShipRepository shipRepository;
 
-    @RequestMapping("/players")
-    public List<Player> getPlayers() {
-        return playerRepository.findAll();
-    }
+	@RequestMapping(path = "/players", method = RequestMethod.POST)
+	public List<Player> getPlayers() {
+		return playerRepository.findAll();
+	}
+
+/*
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
+	public ResponseEntity<Object> register(
+		@RequestParam String userName,
+		@RequestParam String password
+	) {
+
+		if (userName.isEmpty() || password.isEmpty()) {
+			return new ResponseEntity<>("Missing data", HttpStatus.FORBIDDEN);
+		}
+
+		if (playerRepository.findByUserName(userName) !=  null) {
+			return new ResponseEntity<>("Username already in use", HttpStatus.FORBIDDEN);
+		}
+
+		playerRepository.save(new Player(userName, passwordEncoder.encode(password)));
+		return new ResponseEntity<>(HttpStatus.CREATED);
+	}
+*/
 
     @RequestMapping("/games")
     public Set<Map<String, Object>> getGames() {

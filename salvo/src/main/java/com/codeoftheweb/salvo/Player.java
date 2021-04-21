@@ -2,12 +2,12 @@ package com.codeoftheweb.salvo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
 import static java.util.stream.Collectors.toList;
 
 @Entity
@@ -21,6 +21,8 @@ public class Player {
 
     private String userName;
 
+    private String password;
+
     @OneToMany(mappedBy="player", fetch=FetchType.EAGER)
     private Set<GamePlayer> gamePlayers = new HashSet<>();
 
@@ -30,11 +32,12 @@ public class Player {
     //Constructors
     public Player() { }
 
-    public Player(String userName) {
-        this.userName = userName;
-    }
+	public Player(String userName, String password) {
+		this.userName = userName;
+		this.password = password;
+	}
 
-    @JsonIgnore
+	@JsonIgnore
     public List<Game> getGames() {
         return gamePlayers.stream().map(sub -> sub.getGame()).collect(toList());
     }
@@ -65,8 +68,17 @@ public class Player {
         this.userName = userName;
     }
 
-    public Set<Score> getScores() {
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public Set<Score> getScores() {
         return scores;
     }
+
 }
 
