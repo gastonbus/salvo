@@ -60,6 +60,15 @@ var app = new Vue({
                     app.showFiredSalvoes();
                     app.showOpponentSalvoes();
                 })
+        },
+        logout: function () {
+            $.post("/api/logout")
+                .done(function () {
+                    app.authenticatedPlayer = null;
+                    // alert("Usted ha salido.")
+                    window.location.replace("games.html");
+                    // console.log("logged out")
+                })
         }
     },
     mounted: function() {

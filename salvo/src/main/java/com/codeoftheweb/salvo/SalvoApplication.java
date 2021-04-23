@@ -207,6 +207,7 @@ public class SalvoApplication extends SpringBootServletInitializer {
 	}
 }
 
+//Authentication
 @Configuration
 class WebSecurityConfiguration extends GlobalAuthenticationConfigurerAdapter {
 
@@ -227,6 +228,7 @@ class WebSecurityConfiguration extends GlobalAuthenticationConfigurerAdapter {
 	}
 }
 
+//Authorization
 @EnableWebSecurity
 @Configuration
 class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -234,12 +236,11 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-				.antMatchers("/web/game.html", "/api/game_view/**").hasAuthority("USER")
-
+				.antMatchers("/web/game.html", "/api/game_view/**", "/rest/**", "/h2-console/**").hasAuthority("USER")
 				.antMatchers("/**").permitAll();
 
 		http.formLogin()
-				.usernameParameter("username")
+				.usernameParameter("userName")
 				.passwordParameter("password")
 				.loginPage("/api/login");
 

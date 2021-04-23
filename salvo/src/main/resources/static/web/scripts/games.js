@@ -2,19 +2,30 @@ var app = new Vue({
     el: '#app',
     data: {
         games: [],
-        players: []
+        authenticatedPlayer: [],
+        players: [],
+        userName: "",
+        password: ""
     },
     methods: {
         isolatePlayers: function () {
             app.games.forEach(game => {
                 game.gamePlayers.forEach(gamePlayer => {
                     if (!app.players.find(player => player.email == gamePlayer.player.email)) {
-                        app.players.push({email: gamePlayer.player.email, scores: {totalScore: 0, wins: 0, losses: 0, ties: 0}});
+                        app.players.push({
+                            email: gamePlayer.player.email,
+                            scores: {
+                                totalScore: 0,
+                                wins: 0,
+                                losses: 0,
+                                ties: 0
+                            }
+                        });
                     }
                 })
             })
         },
-        generatePlayersData: function() {
+        generatePlayersData: function () {
             app.isolatePlayers();
             app.players.forEach(player => {
                 app.games.forEach(game => {
@@ -33,36 +44,55 @@ var app = new Vue({
                 })
             })
         },
-        getScoresData: function() {
+        getScoresData: function () {
             fetch('http://localhost:8080/api/games')
                 .then(response => response.json())
                 .then(data => {
-                    app.games = data;
+                    app.games = data.games;
+                    app.authenticatedPlayer = data.player;
                     app.generatePlayersData();
-                    console.log(app.players);
+                    // console.log(app.players);
                 });
+        },
+        login: function () {
+            $.post("/api/login", {
+                    userName: app.userName,
+                    password: app.password
+                })
+                .done(function () {
+                    // alert("Has ingresado correctamente.");
+                    location.reload()
+                })
+                .fail(function () {
+                    alert("Hubo un error al intentar iniciar sesión.")
+                })
+        },
+        signup: function () {
+            // $.post("/api/players", { userName: "gaston@gmail.com", password: "1234" })
+            $.post("/api/players", {
+                    userName: app.userName,
+                    password: app.password
+                })
+                .done(function () {
+                    app.login();
+                    alert("Jugador registrado exitosamente.")
+                    console.log("Jugador registrado exitosamente.");
+                })
+                .fail(function () {
+                    alert("Hubo un error al intentar crear el usuario.")
+                })
+        },
+        logout: function () {
+            $.post("/api/logout")
+                .done(function () {
+                    app.authenticatedPlayer = null;
+                    // alert("Usted ha salido.")
+                    location.reload();
+                    // console.log("logged out")
+                })
         }
     },
-    mounted: function() {
+    mounted: function () {
         this.getScoresData();
     }
 })
-
-function login(evt) {
-  evt.preventDefault();
-  var form = evt.target.form;
-  $.post("/api/login", 
-         { 
-            userName: form["username"].value,
-            password: form["password"].value
-        })
-   .done()
-   .fail();
-}
-
-function logout(evt) {
-  evt.preventDefault();
-  $.post("/api/logout")
-   .done()
-   .fail();
-}
