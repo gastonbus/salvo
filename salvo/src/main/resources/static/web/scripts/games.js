@@ -2,7 +2,7 @@ var app = new Vue({
     el: '#app',
     data: {
         games: [],
-        authenticatedPlayer: [],
+        authenticatedPlayer: null,
         players: [],
         userName: "",
         password: ""
@@ -54,41 +54,60 @@ var app = new Vue({
                     // console.log(app.players);
                 });
         },
+        createGame: function() {
+            $.post("/api/games")
+            .done(function (data) {
+                alert("Game created! Press accept to go into the game.");
+                window.location.href = "game.html?gp=" + data.gpid;
+            })
+            .fail(function () {
+                alert("There was a problem creating a new game.");
+            })
+        },
+        joinGame: function(gameId) {
+            $.post("/api/games/" + gameId + "/players")
+            .done(function (data) {
+                alert("Congratulations! You've just joined this game. Good luck!");
+                window.location.href = "game.html?gp=" + data.gpid;
+            })
+            .fail(function () {
+                alert("There was a problem joining the game.");
+            })
+        },
         login: function () {
             $.post("/api/login", {
                     userName: app.userName,
                     password: app.password
                 })
                 .done(function () {
-                    // alert("Has ingresado correctamente.");
-                    location.reload()
+                    // alert("Logged in successfully!");
+                    location.reload();
                 })
                 .fail(function () {
-                    alert("Hubo un error al intentar iniciar sesión.")
+                    alert("There was an error trying to start session.");
                 })
         },
         signup: function () {
-            // $.post("/api/players", { userName: "gaston@gmail.com", password: "1234" })
             $.post("/api/players", {
                     userName: app.userName,
                     password: app.password
                 })
                 .done(function () {
                     app.login();
-                    alert("Jugador registrado exitosamente.")
-                    console.log("Jugador registrado exitosamente.");
+                    alert("Player created successfully.");
+                    // console.log("Player created successfully.");
                 })
                 .fail(function () {
-                    alert("Hubo un error al intentar crear el usuario.")
+                    alert("There was an error creating the player.");
                 })
         },
         logout: function () {
             $.post("/api/logout")
                 .done(function () {
                     app.authenticatedPlayer = null;
-                    // alert("Usted ha salido.")
+                    // alert("Logged out");
                     location.reload();
-                    // console.log("logged out")
+                    // console.log("logged out");
                 })
         }
     },

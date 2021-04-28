@@ -15,8 +15,10 @@ var app = new Vue({
     },
     methods: {
         savePlayers: function () {
-            app.players.playerA = app.game.gamePlayers.find(element => element.id == app.gamePlayerId).player;
-            app.players.playerB = app.game.gamePlayers.find(element => element.id != app.gamePlayerId).player;
+            app.players.playerA = app.game.gamePlayers.find(element => element.gpid == app.gamePlayerId).player;
+            if (app.game.gamePlayers.length == 2) {
+                app.players.playerB = app.game.gamePlayers.find(element => element.gpid != app.gamePlayerId).player;                   
+            }
         },
         locateShips: function () {
             app.game.ships.forEach(ship => {
@@ -52,7 +54,14 @@ var app = new Vue({
         },
         getGameData: function() {
             fetch('http://localhost:8080/api/game_view/' + this.gamePlayerId)
-                .then(response => response.json())
+                .then(response => {
+                    if (response.ok) {
+                        // add a new promise to the chain
+                          return response.json(); 
+                        }
+                        // signal a server error to the chain
+                        throw new Error(response.statusText);
+                      })
                 .then(data => {
                     app.game = data;
                     app.savePlayers();
@@ -60,13 +69,19 @@ var app = new Vue({
                     app.showFiredSalvoes();
                     app.showOpponentSalvoes();
                 })
+                .catch(function(error) {
+                    // called when an error occurs anywhere in the chain
+                    alert("This is not your game. Don't try to cheat!");
+                    console.log(error);
+                    window.location.href("games.html");
+                })
         },
         logout: function () {
             $.post("/api/logout")
                 .done(function () {
                     app.authenticatedPlayer = null;
                     // alert("Usted ha salido.")
-                    window.location.replace("games.html");
+                    window.location.href= "games.html";
                     // console.log("logged out")
                 })
         }
