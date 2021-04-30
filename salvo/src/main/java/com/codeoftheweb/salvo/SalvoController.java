@@ -91,13 +91,19 @@ public class SalvoController {
 		if (!isGuest(authentication)) { //Verify if user is authenticated or not
 			LocalDateTime dateTime = LocalDateTime.now();
 			Player authenticatedPlayer = playerRepository.findByUserName(authentication.getName());
-			Optional<Game> requestedGame = gameRepository.findById(gameId);
-			if (requestedGame.isPresent()) { //Verify that the game exists
-				if (gamePlayerRepository.findAll().stream().filter(gp -> gp.getGame().getId() == gameId).count() < 2) { //Verify if the player is full or it have space for one more player
-					//Procedure to join a game:
-					GamePlayer newGamePlayer = new GamePlayer(dateTime, authenticatedPlayer, requestedGame.get());
-					gamePlayerRepository.save(newGamePlayer);
-					return new ResponseEntity<>(makeMap("gpid", newGamePlayer.getId()), HttpStatus.CREATED);
+			Optional<Game> optRequestedGame = gameRepository.findById(gameId);
+			if (optRequestedGame.isPresent()) { //Verify that the game exists
+				Game requestedGame = optRequestedGame.get();
+				if (requestedGame.getGamePlayers().size() < 2) { //Verify if the player is full or it have space for one more player
+					Optional<Player> existingPlayer = requestedGame.getPlayers().stream().findFirst();
+					if (existingPlayer.isPresent() && authenticatedPlayer.getId() != existingPlayer.get().getId()) { //Verify if the existing player is not the authenticated player
+						//Procedure to join a game:
+						GamePlayer newGamePlayer = new GamePlayer(dateTime, authenticatedPlayer, requestedGame);
+						gamePlayerRepository.save(newGamePlayer);
+						return new ResponseEntity<>(makeMap("gpid", newGamePlayer.getId()), HttpStatus.CREATED);
+					} else {
+						return new ResponseEntity<>(makeMap("error", "You are already in this game."), HttpStatus.FORBIDDEN);
+					}
 				} else {
 					return new ResponseEntity<>(makeMap("error", "The game is full and you can't join it."), HttpStatus.FORBIDDEN);
 				}

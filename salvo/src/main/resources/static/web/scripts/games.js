@@ -57,7 +57,7 @@ var app = new Vue({
         createGame: function() {
             $.post("/api/games")
             .done(function (data) {
-                alert("Game created! Press accept to go into the game.");
+                alert("Game created! Press accept to play.");
                 window.location.href = "game.html?gp=" + data.gpid;
             })
             .fail(function () {

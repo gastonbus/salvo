@@ -1,5 +1,20 @@
 body {
     background-image: url(../img/bg_01.jpg);
+    background-position: top center;
+    color: white;
+}
+
+ol {
+    list-style-type: none;
+    font-weight: bolder;
+}
+
+ul {
+    font-weight: normal;
+}
+
+li {
+    margin-top: 5px;
 }
 
 table, td, th {
@@ -9,31 +24,40 @@ table, td, th {
 table {
     width: 100%;
     text-align: center;
-    background-color: rgb(54, 54, 54);
+    background-color: rgb(82, 82, 82);
+    opacity: 80%;
 }
 
 td, th {
     width: 9.0909%;
     height: 9.0909%;
+    color: white;
+}
+
+th {
+    background-color: rgb(94, 128, 221);
 }
 
 p {
     text-align: center;
-    font-size: 24px;
-    margin-top: 30px;
+    font-size: 20px;
 }
 
 h1 {
     text-align: center;
+    margin-top: 15px;
+    margin-bottom: 15px;;
 }
 
 .userName {
     font-weight: bold;
-    color: darkred;
+    color: rgb(46, 190, 2);
 }
 
 #empty-cell {
-    background-color: rgb(128, 128, 128);
+    background: none;
+    border-top: none;
+    border-left: none;
 }
 
 .battleship {
@@ -74,4 +98,41 @@ h1 {
     margin: 2px 2px 2px 2px;
     font-size: 12px;
     color: white;
+}
+
+.sideButton {
+    margin-left: 10px;
+}
+
+.newGameButton {
+    margin-bottom: 15px;
+}
+
+.loginForm {
+    margin-bottom: 15px;
+}
+
+.requestLoginText {
+    color: orange;
+}
+
+#welcome {
+    border-radius: 10px;
+    color: rgb(209, 0, 0);
+    font-weight: bold;
+}
+
+#gameTitle {
+    background-color: black;
+    padding: 5px 5px 5px 5px;
+    border-radius: 25px;
+    margin-bottom: 35px;
+}
+
+.underTableText {
+    display: block;
+    background-color: rgb(133, 43, 36);
+    opacity: 90%;
+    border-radius: 15px;
+    margin-top: 15px;
 }
