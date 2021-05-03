@@ -14,20 +14,25 @@
         <div class="container">
             <div class="row">
                 <div class="col-12 text-end">
-                    <button type="submit" class="btn btn-danger btn-sm sideButton" v-on:click="logout()">Log Out</button>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <h1 id="gameTitle"><span class="userName">{{players.playerA.email}}</span> (you) vs <span class="userName">{{players.playerB.email}}</span></h1>
+                    <button v-on:click="saveShips(gamePlayerId)">Save ship locations</button>
+                    <button class="btn btn-success btn-sm sideButton" onclick="javascript: window.location.href = 'games.html'">Leave game</button>
+                    <button class="btn btn-danger btn-sm sideButton" v-on:click="logout()">Log Out</button>
                 </div>
             </div>
             <div class="row justify-content-between">
                 <div class="col-5">
-                    <table>
+                    <h1 id="gameTitle"><span class="userName">{{players.playerA.email}} (you)</span></h1>
+                </div>
+                <div class="col-5">
+                    <h1 id="gameTitle"><span class="userName text-danger" v-if="Object.keys(players.playerB).length === 0">anybody (yet)</span><span class="userName text-danger" v-else>{{players.playerB.email}}</span></h1>
+                </div>
+            </div>
+            <div class="row justify-content-between align-items-center">
+                <div class="col-5">
+                    <table class="battleTable">
                         <thead>
                             <tr>
-                                <td id="empty-cell"></td>
+                                <td class="empty-cell"></td>
                                 <th v-for="column in columns">{{column}}</th>
                             </tr>
                         </thead>
@@ -42,11 +47,15 @@
                         <p>This is your ship's board</p>
                     </div>
                 </div>
+                <div class="col-2">
+                    <h1 id="gameTitle">vs</h1>
+                </div>
+
                 <div class="col-5">
-                    <table>
+                    <table class="battleTable">
                         <thead>
                             <tr>
-                                <td id="empty-cell"></td>
+                                <td class="empty-cell"></td>
                                 <th v-for="column in columns">{{column}}</th>
                             </tr>
                         </thead>

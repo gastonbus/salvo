@@ -67,8 +67,8 @@ var app = new Vue({
         joinGame: function(gameId) {
             $.post("/api/games/" + gameId + "/players")
             .done(function (data) {
-                alert("Congratulations! You've just joined this game. Good luck!");
                 window.location.href = "game.html?gp=" + data.gpid;
+                // alert("Congratulations! You've just joined this game. Good luck!");
             })
             .fail(function () {
                 alert("There was a problem joining the game.");

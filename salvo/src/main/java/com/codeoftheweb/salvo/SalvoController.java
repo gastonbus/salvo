@@ -9,6 +9,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.*;
+
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
 @RestController
@@ -56,7 +58,9 @@ public class SalvoController {
 	@GetMapping("/games")
 	public Map<String, Object> getGames(Authentication authentication) {
 		Map<String, Object> dto = new LinkedHashMap<>();
-		if (!isGuest(authentication)) { //Verify if user is authenticated or not
+
+		//Verify if user is authenticated or not
+		if (!isGuest(authentication)) {
 			Player authenticatedPlayer = playerRepository.findByUserName(authentication.getName());
 			dto.put("player", makePlayerDTO(authenticatedPlayer));
 		} else {
@@ -66,6 +70,7 @@ public class SalvoController {
 		return dto;
 	}
 
+	//Function to create new game
 	@PostMapping("/games")
 	public ResponseEntity<Map<String, Object>> createGame(Authentication authentication) {
 		if (!isGuest(authentication)) {
@@ -86,54 +91,68 @@ public class SalvoController {
 		}
 	}
 
+	//Function to join an existing game
 	@PostMapping("/games/{gameId}/players")
 	public ResponseEntity<Map<String,Object>> joinGame(@PathVariable Long gameId, Authentication authentication) {
-		if (!isGuest(authentication)) { //Verify if user is authenticated or not
-			LocalDateTime dateTime = LocalDateTime.now();
-			Player authenticatedPlayer = playerRepository.findByUserName(authentication.getName());
-			Optional<Game> optRequestedGame = gameRepository.findById(gameId);
-			if (optRequestedGame.isPresent()) { //Verify that the game exists
-				Game requestedGame = optRequestedGame.get();
-				if (requestedGame.getGamePlayers().size() < 2) { //Verify if the player is full or it have space for one more player
-					Optional<Player> existingPlayer = requestedGame.getPlayers().stream().findFirst();
-					if (existingPlayer.isPresent() && authenticatedPlayer.getId() != existingPlayer.get().getId()) { //Verify if the existing player is not the authenticated player
-						//Procedure to join a game:
-						GamePlayer newGamePlayer = new GamePlayer(dateTime, authenticatedPlayer, requestedGame);
-						gamePlayerRepository.save(newGamePlayer);
-						return new ResponseEntity<>(makeMap("gpid", newGamePlayer.getId()), HttpStatus.CREATED);
-					} else {
-						return new ResponseEntity<>(makeMap("error", "You are already in this game."), HttpStatus.FORBIDDEN);
-					}
-				} else {
-					return new ResponseEntity<>(makeMap("error", "The game is full and you can't join it."), HttpStatus.FORBIDDEN);
-				}
-			} else {
-				return new ResponseEntity<>(makeMap("error", "The game you want to play does not exist."), HttpStatus.FORBIDDEN);
-			}
-		} else {
+
+		//Verify if user is authenticated or not
+		if (isGuest(authentication)) {
 			return new ResponseEntity<>(makeMap("error", "You are not logged in!"), HttpStatus.UNAUTHORIZED);
 		}
+
+		LocalDateTime dateTime = LocalDateTime.now();
+		Player authenticatedPlayer = playerRepository.findByUserName(authentication.getName());
+		Optional<Game> optRequestedGame = gameRepository.findById(gameId);
+
+		//Verify that the game exists
+		if (optRequestedGame.isEmpty()) {
+			return new ResponseEntity<>(makeMap("error", "The game you want to play does not exist."), HttpStatus.FORBIDDEN);
+		}
+
+		//Verify if the player is full or it have space for one more player
+		Game requestedGame = optRequestedGame.get();
+		if (requestedGame.getGamePlayers().size() >= 2) {
+			return new ResponseEntity<>(makeMap("error", "The game is full and you can't join it."), HttpStatus.FORBIDDEN);
+		}
+
+		//Verify if the existing player is not the authenticated player
+		Optional<Player> existingPlayer = requestedGame.getPlayers().stream().findFirst();
+		if (!(existingPlayer.isPresent() && authenticatedPlayer.getId() != existingPlayer.get().getId())) {
+			return new ResponseEntity<>(makeMap("error", "You are already in this game."), HttpStatus.FORBIDDEN);
+		}
+
+		//Procedure to join a game:
+		GamePlayer newGamePlayer = new GamePlayer(dateTime, authenticatedPlayer, requestedGame);
+		gamePlayerRepository.save(newGamePlayer);
+		return new ResponseEntity<>(makeMap("gpid", newGamePlayer.getId()), HttpStatus.CREATED);
 	}
 
     @GetMapping("/game_view/{gamePlayerId}")
 	public ResponseEntity<Map<String, Object>> getGame(@PathVariable Long gamePlayerId, Authentication authentication) {
-		if(!isGuest(authentication)) { //Verify if user is authenticated or not
-			Player authenticatedPlayer = playerRepository.findByUserName(authentication.getName());
-			Optional<GamePlayer> optGamePlayer = gamePlayerRepository.findById(gamePlayerId);
-			if (optGamePlayer.isPresent()) {
-				GamePlayer gamePlayer = optGamePlayer.get();
-				if(authenticatedPlayer.getId() == gamePlayer.getPlayer().getId()) { //Verify if this player is playing the game requested.
-					return new ResponseEntity<>(makeGameViewDTO(gamePlayer), HttpStatus.OK);
-				} else {
-					return new ResponseEntity<>(makeMap("error", "This is not your game. Don't try to cheat!"), HttpStatus.FORBIDDEN);
-				}
-			} else {
-				return new ResponseEntity<>(makeMap("error", "That game does not correspond to any player."), HttpStatus.BAD_REQUEST);
-			}
-		} else {
+
+		//Verify if user is authenticated or not
+		if(isGuest(authentication)) {
 			return new ResponseEntity<>(makeMap("error", "You are not logged in!"), HttpStatus.UNAUTHORIZED);
 		}
-		/*if(!isGuest(authentication)) { //Verify if user is authenticated or not
+		Player authenticatedPlayer = playerRepository.findByUserName(authentication.getName());
+		Optional<GamePlayer> optGamePlayer = gamePlayerRepository.findById(gamePlayerId);
+
+		if (optGamePlayer.isEmpty()) {
+			return new ResponseEntity<>(makeMap("error", "That game does not correspond to any player."), HttpStatus.BAD_REQUEST);
+		}
+
+		GamePlayer gamePlayer = optGamePlayer.get();
+
+		//Verify if this player is playing the game requested.
+		if(!(authenticatedPlayer.getId() == gamePlayer.getPlayer().getId())) {
+			return new ResponseEntity<>(makeMap("error", "This is not your game. Don't try to cheat!"), HttpStatus.FORBIDDEN);
+		}
+
+		return new ResponseEntity<>(makeGameViewDTO(gamePlayer), HttpStatus.OK);
+
+		/* Otra forma de hacerlo:
+
+		if(!isGuest(authentication)) { //Verify if user is authenticated or not
 			Player authenticatedPlayer = playerRepository.findByUserName(authentication.getName());
 			Optional<GamePlayer> optGamePlayer = gamePlayerRepository.findById(gamePlayerId);
 			return optGamePlayer.map(gp -> {
@@ -147,6 +166,42 @@ public class SalvoController {
 		} else {
 			return new ResponseEntity<>(makeMap("error", "You are not logged in!"), HttpStatus.UNAUTHORIZED);
 		}*/
+	}
+
+	@PostMapping("/games/players/{gamePlayerId}/ships")
+	public ResponseEntity<Map<String, Object>> locateShips(@PathVariable Long gamePlayerId, @RequestBody List<Ship> ships, Authentication authentication) {
+		if (isGuest(authentication)) {
+			return new ResponseEntity<>(makeMap("error", "You are not logged in!"), HttpStatus.UNAUTHORIZED);
+		}
+
+		Optional<GamePlayer> optGamePlayer = gamePlayerRepository.findById(gamePlayerId);
+		if (optGamePlayer.isEmpty()) {
+			return new ResponseEntity<>(makeMap("error", "The gamePlayer requested does not exist."), HttpStatus.UNAUTHORIZED);
+		}
+
+		Player authenticatedPlayer = playerRepository.findByUserName(authentication.getName());
+		GamePlayer gamePlayer = optGamePlayer.get();
+
+		//Verify if this player is playing the game requested.
+		if(authenticatedPlayer.getId() != gamePlayer.getPlayer().getId()) {
+			return new ResponseEntity<>(makeMap("error", "This game does not correspond to this player."), HttpStatus.UNAUTHORIZED);
+		}
+
+		//Validate if the player has his ships placed.
+		if (shipRepository.findAll().stream().filter(ship -> ship.getGamePlayer().equals(gamePlayer)).count() == 5) {
+			return new ResponseEntity<>(makeMap("error", "You've just located your ships."), HttpStatus.FORBIDDEN);
+		}
+
+		//Validate if the request contains 5 ships.
+		if (ships.size() != 5) {
+			return new ResponseEntity<>(makeMap("error", "The request does not contains 5 ships."), HttpStatus.FORBIDDEN);
+		}
+
+		//Save the ships corresponding to the authenticated player
+		for (Ship ship:ships) {
+			shipRepository.save(new Ship(gamePlayer, ship.getType(), ship.getLocations()));
+		}
+		return new ResponseEntity<>(makeMap("gpid", gamePlayer.getId()), HttpStatus.CREATED);
 	}
 
 	public Map<String, Object> makeGamesDTO(Game game) {
@@ -210,10 +265,12 @@ public class SalvoController {
         return dto;
     }
 
+    //Function to help find if the user is authenticated or not
 	private boolean isGuest(Authentication authentication) {
 		return authentication == null || authentication instanceof AnonymousAuthenticationToken;
 	}
 
+	//Function to create a Json used in responses
 	private Map<String, Object> makeMap(String key, Object value) {
 		Map<String, Object> map = new HashMap<>();
 		map.put(key, value);

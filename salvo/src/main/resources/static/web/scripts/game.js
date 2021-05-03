@@ -76,6 +76,47 @@ var app = new Vue({
                     window.location.href("games.html");
                 })
         },
+        saveShips: function(gamePlayerId) {
+            //post data
+            $.post({
+                url: "/api/games/players/" + gamePlayerId + "/ships", 
+                data: JSON.stringify([
+                    {
+                        "type": "Carrier", 
+                        "locations": ["C4", "D4", "E4", "F4", "G4"]
+                    },
+                    {
+                        "type": "Battleship",
+                        "locations": ["E6", "E7", "E8", "E9"]
+                    },
+                    {
+                        "type": "Submarine",
+                        "locations": ["G1", "H1", "I1"]
+                    },
+                    {
+                        "type": "Destroyer",
+                        "locations": ["J5", "J6", "J7"]
+                    },
+                    {
+                        "type": "Patrol Boat",
+                        "locations": ["H10", "I10"]
+                    }
+                ]),
+                dataType: "text",
+                contentType: "application/json"
+              })
+              //if successful
+              .done(function (response, status, jqXHR) {
+                //recargar pagina (si es que está en game.html, y sino ir a game.html?gp=xx)
+                //tener cuidado de que tambien tiene que haber terminado de cargar sus ships el oponente
+                // alert( "Ships added: " + response );
+                window.location.href = "game.html?gp=" + gamePlayerId;
+              })
+              .fail(function (jqXHR, status, httpError) {
+                alert("Failed to add ships: " + httpError);
+              })
+
+        },
         logout: function () {
             $.post("/api/logout")
                 .done(function () {
