@@ -14,7 +14,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-12 text-end">
-                    <button v-on:click="saveShips(gamePlayerId)">Save ship locations</button>
+                    <button v-on:click="prepareShipsForSave(gamePlayerId)">Save ship locations</button>
                     <button class="btn btn-success btn-sm sideButton" onclick="javascript: window.location.href = 'games.html'">Leave game</button>
                     <button class="btn btn-danger btn-sm sideButton" v-on:click="logout()">Log Out</button>
                 </div>
@@ -39,7 +39,7 @@
                         <tbody>
                             <tr v-for="row in rows">
                                 <th>{{row}}</th>
-                                <td v-for="column in columns" v-bind:id="'ships-' + row + column"></td>
+                                <td v-for="column in columns" v-bind:id="'ships-' + row + column" v-on:mouseover="showShipsLocations"></td>
                             </tr>
                         </tbody>
                     </table>

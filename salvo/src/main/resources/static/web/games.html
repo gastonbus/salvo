@@ -30,7 +30,7 @@
                 <div class="col-12 text-end loginForm">
                     <form v-if="authenticatedPlayer == null">
                         <label class="align-middle"><input type="text" name="username" class="align-middle" v-model="userName" placeholder="email"></label>
-                        <label class="align-middle"><input type="password" name="password" class="align-middle" v-model="password" placeholder="password"></label>
+                        <label class="align-middle"><input type="password" name="password" class="align-middle" v-model="password" v-on:keyup.13="login()" placeholder="password"></label>
                         <button type="button" class="btn btn-primary btn-sm sideButton" v-on:click="login()">Log In</button>
                         <button type="button" class="btn btn-success btn-sm align-middle sideButton" v-on:click="signup()">Sign Up</button>
                     </form>

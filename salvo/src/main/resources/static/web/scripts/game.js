@@ -12,6 +12,28 @@ var app = new Vue({
         playerASalvoes: null,
         playerBSalvoes: null,
         playerAShipsLocations: [],
+        playerAShipLocationsForPost: [
+            {
+                "type": "Carrier", 
+                "locations": ["C4", "D4", "E4", "F4", "G4"]
+            },
+            {
+                "type": "Battleship",
+                "locations": ["E6", "E7", "E8", "E9"]
+            },
+            {
+                "type": "Submarine",
+                "locations": ["G1", "H1", "I1"]
+            },
+            {
+                "type": "Destroyer",
+                "locations": ["J5", "J6", "J7"]
+            },
+            {
+                "type": "Patrol Boat",
+                "locations": ["H10", "I10"]
+            }
+        ]
     },
     methods: {
         savePlayers: function () {
@@ -57,7 +79,7 @@ var app = new Vue({
                 .then(response => {
                     if (response.ok) {
                         // add a new promise to the chain
-                          return response.json(); 
+                        return response.json(); 
                         }
                         // signal a server error to the chain
                         throw new Error(response.statusText);
@@ -76,32 +98,23 @@ var app = new Vue({
                     window.location.href("games.html");
                 })
         },
+        showShipsLocations: function(event) {
+            if (event) {
+                var element = event.target.id.slice(6);
+                // console.log(element);
+            }
+        },
+        prepareShipsForSave: function(gamePlayerId) {
+            //procedure
+
+            console.log("sobre celda");
+            // app.saveShips(gamePlayerId);
+
+        },
         saveShips: function(gamePlayerId) {
-            //post data
             $.post({
                 url: "/api/games/players/" + gamePlayerId + "/ships", 
-                data: JSON.stringify([
-                    {
-                        "type": "Carrier", 
-                        "locations": ["C4", "D4", "E4", "F4", "G4"]
-                    },
-                    {
-                        "type": "Battleship",
-                        "locations": ["E6", "E7", "E8", "E9"]
-                    },
-                    {
-                        "type": "Submarine",
-                        "locations": ["G1", "H1", "I1"]
-                    },
-                    {
-                        "type": "Destroyer",
-                        "locations": ["J5", "J6", "J7"]
-                    },
-                    {
-                        "type": "Patrol Boat",
-                        "locations": ["H10", "I10"]
-                    }
-                ]),
+                data: JSON.stringify(app.playerAShipLocationsForPost),
                 dataType: "text",
                 contentType: "application/json"
               })

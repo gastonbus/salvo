@@ -176,7 +176,7 @@ public class SalvoController {
 
 		Optional<GamePlayer> optGamePlayer = gamePlayerRepository.findById(gamePlayerId);
 		if (optGamePlayer.isEmpty()) {
-			return new ResponseEntity<>(makeMap("error", "The gamePlayer requested does not exist."), HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<>(makeMap("error", "The gamePlayer requested does not exist."), HttpStatus.FORBIDDEN);
 		}
 
 		Player authenticatedPlayer = playerRepository.findByUserName(authentication.getName());
@@ -184,11 +184,11 @@ public class SalvoController {
 
 		//Verify if this player is playing the game requested.
 		if(authenticatedPlayer.getId() != gamePlayer.getPlayer().getId()) {
-			return new ResponseEntity<>(makeMap("error", "This game does not correspond to this player."), HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<>(makeMap("error", "This game does not correspond to this player."), HttpStatus.FORBIDDEN);
 		}
 
 		//Validate if the player has his ships placed.
-		if (shipRepository.findAll().stream().filter(ship -> ship.getGamePlayer().equals(gamePlayer)).count() == 5) {
+		if (gamePlayer.getShips().size() == 5) {
 			return new ResponseEntity<>(makeMap("error", "You've just located your ships."), HttpStatus.FORBIDDEN);
 		}
 
