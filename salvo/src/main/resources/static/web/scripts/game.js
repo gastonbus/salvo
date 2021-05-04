@@ -103,6 +103,19 @@ var app = new Vue({
                 var element = event.target.id.slice(6);
                 // console.log(element);
             }
+            //si esta seleccionado "carrier"
+                //shipLength = 5
+                //si esta seleccionado horizontal
+                    //si la columna es mayor a 10-shipLength
+                        //dejar de mostrar el barco
+                    //sino, pintar la celda sobre la que se encuentra el mouse y las 4 que están a su derecha
+                    
+                //si esta seleccionado vertical
+                    //si la fila es mayor a rows.length - shipLength
+                        //dejar de mostrar el barco
+                    //sino, pintar la celda sobre la que se encuentra el mouse y las 4 que están debajo.
+
+            //repetir para cada tipo de barco
         },
         prepareShipsForSave: function(gamePlayerId) {
             //procedure
