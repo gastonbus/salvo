@@ -134,16 +134,16 @@ public class SalvoController {
 		if(isGuest(authentication)) {
 			return new ResponseEntity<>(makeMap("error", "You are not logged in!"), HttpStatus.UNAUTHORIZED);
 		}
+
+		//Verify if this combination of game and player (gamePlayer) exists.
 		Player authenticatedPlayer = playerRepository.findByUserName(authentication.getName());
 		Optional<GamePlayer> optGamePlayer = gamePlayerRepository.findById(gamePlayerId);
-
 		if (optGamePlayer.isEmpty()) {
 			return new ResponseEntity<>(makeMap("error", "That game does not correspond to any player."), HttpStatus.BAD_REQUEST);
 		}
 
-		GamePlayer gamePlayer = optGamePlayer.get();
-
 		//Verify if this player is playing the game requested.
+		GamePlayer gamePlayer = optGamePlayer.get();
 		if(!(authenticatedPlayer.getId() == gamePlayer.getPlayer().getId())) {
 			return new ResponseEntity<>(makeMap("error", "This is not your game. Don't try to cheat!"), HttpStatus.FORBIDDEN);
 		}
@@ -170,19 +170,20 @@ public class SalvoController {
 
 	@PostMapping("/games/players/{gamePlayerId}/ships")
 	public ResponseEntity<Map<String, Object>> locateShips(@PathVariable Long gamePlayerId, @RequestBody List<Ship> ships, Authentication authentication) {
+		//Verify if user is authenticated or not
 		if (isGuest(authentication)) {
 			return new ResponseEntity<>(makeMap("error", "You are not logged in!"), HttpStatus.UNAUTHORIZED);
 		}
 
+		//Verify if this combination of game and player (gamePlayer) exists.
 		Optional<GamePlayer> optGamePlayer = gamePlayerRepository.findById(gamePlayerId);
 		if (optGamePlayer.isEmpty()) {
 			return new ResponseEntity<>(makeMap("error", "The gamePlayer requested does not exist."), HttpStatus.FORBIDDEN);
 		}
 
+		//Verify if this player is playing the game requested.
 		Player authenticatedPlayer = playerRepository.findByUserName(authentication.getName());
 		GamePlayer gamePlayer = optGamePlayer.get();
-
-		//Verify if this player is playing the game requested.
 		if(authenticatedPlayer.getId() != gamePlayer.getPlayer().getId()) {
 			return new ResponseEntity<>(makeMap("error", "This game does not correspond to this player."), HttpStatus.FORBIDDEN);
 		}

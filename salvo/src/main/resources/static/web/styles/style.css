@@ -20,12 +20,11 @@ li {
 }
 
 .scoresTable {
+    background-color: rgba(0, 0, 0, 0.300);
     width: 100%;
     text-align: center;
-    background-color: rgba(0, 0, 0, 0.300);
-    color: white;
     border: none;
-
+    color: white;
 }
 .scoresTable td {
     border-bottom: none;
@@ -36,21 +35,21 @@ li {
     border-bottom: 1px solid white;
 }
 
-.battleTable {
+.battleTable, .locateShipsTable {
     background-color: rgba(0, 0, 0, 0.300);
     width: 100%;
-    border: 1px solid black;
     text-align: center;
+    border: 1px solid black;
 }
 
-.battleTable td, th {
+.battleTable td, .battleTable th, .locateShipsTable td, .locateShipsTable th {
     width: 9.0909%;
     height: 9.0909%;
     color: white;
     border: 1px solid black;
 }
 
-.battleTable th {
+.battleTable th, .locateShipsTable th {
     background-color: rgb(94, 128, 221);
 }
 
@@ -76,27 +75,46 @@ h1 {
     background-color: rgb(94, 128, 221);
     border-top: none;
     border-left: none;
-    
 }
 
 .battleship {
     background-color: red;
 }
 
+.battleshipPrev {
+    background-color: rgb(255, 148, 148);
+}
+
 .submarine {
     background-color: blue;
 }
 
-.destroyer{
+.submarinePrev {
+    background-color: rgb(137, 137, 255);
+}
+
+.destroyer {
     background-color: green;
 }
 
-.carrier{
+.destroyerPrev {
+    background-color: rgb(100, 168, 100);
+}
+
+.carrier {
     background-color: orange;
+}
+
+.carrierPrev {
+    background-color: rgb(255, 205, 112);
 }
 
 .patrolboat {
     background-color: yellow;
+}
+
+.patrolboatPrev {
+    background-color: rgb(255, 255, 153);
 }
 
 .firedSalvoes {
@@ -168,4 +186,13 @@ nav {
     background-color: rgba(0, 0, 0, 0.300);
     padding: 20px 20px 20px 20px;
     border: 0px solid black ;
+    height: 600px;
+}
+
+.locateShipsPrevisualization {
+    background-color: rgba(167, 255, 211, 0.658);
+}
+
+.setShipsPrevisualization {
+    background-color: rgb(0, 253, 127);
 }

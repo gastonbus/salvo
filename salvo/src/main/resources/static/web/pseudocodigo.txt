@@ -1,4 +1,0 @@
-al crear nuevo juego, mostrarle al usuario una grilla para colocar los barcos
-cuando finalice, procesar una función para armar un objeto:
-    shipType: x,
-    locations: []
