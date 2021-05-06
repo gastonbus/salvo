@@ -29,7 +29,7 @@
                             class="userName text-danger" v-else>{{players.playerB.email}}</span></h1>
                 </div>
             </div>
-            <div class="row justify-content-between align-items-center">
+            <div class="row justify-content-between align-items-start">
                 <div class="col-5">
                     <table class="battleTable">
                         <thead>
@@ -41,15 +41,36 @@
                         <tbody>
                             <tr v-for="row in rows">
                                 <th>{{row}}</th>
-                                <td v-for="column in columns" v-bind:id="'ships-' + row + column"></td>
+                                <td v-for="column in columns" v-bind:id="'ships-' + row + column" v-on:mouseenter="showShipLocationPrevisualization" v-on:mouseleave="removeShipLocationPrevisualization" v-on:click="setShipLocation"></td>
                             </tr>
                         </tbody>
                     </table>
                     <div class="underTableText">
                         <p>This is your ship's board</p>
                     </div>
+                    <div v-if="shipsSetted == false">
+                        <div>
+                            <select id="shipType" name="shipType" v-model="comboBoxSelection">
+                                <option value="Select a ship" disabled hidden>Select a ship</option>
+                                <option value="carrier">Carrier</option>
+                                <option value="battleship">Battleship</option>
+                                <option value="submarine">Submarine</option>
+                                <option value="destroyer">Destroyer</option>
+                                <option value="patrolboat">Patrol Boat</option>
+                            </select>
+                            <input type="radio" id="horizontal" name="orientation" value="horizontal" v-model="radioSelection">
+                            <label for="horizontal">Horizontal</label>
+                            <input type="radio" id="vertical" name="orientation" value="vertical" v-model="radioSelection">
+                            <label for="vertical">Vertical</label><br>
+                        </div>
+                        <div class="locateShipsButtons">
+                            <button class="btn btn-danger" v-on:click="clearGrid">Clear</button>
+                            <button class="btn btn-info" v-on:click="saveShips(gamePlayerId)">Save ship locations</button>
+                        </div>
+
+                    </div>
                 </div>
-                <div class="col-2">
+                <div class="col-2 vs">
                     <h1 id="gameTitle">vs</h1>
                 </div>
 
@@ -71,40 +92,6 @@
                     <div class="underTableText">
                         <p>This is your salvo's board</p>
                     </div>
-                </div>
-            </div>
-            <div class="row locateShips justify-content-center">
-                <div class="col-5">
-                    <table class="locateShipsTable">
-                        <thead>
-                            <tr>
-                                <td class="empty-cell"></td>
-                                <th v-for="column in columns">{{column}}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="row in rows">
-                                <th>{{row}}</th>
-                                <td v-for="column in columns" v-bind:id="row + column" v-on:mouseenter="showShipLocationPrevisualization" v-on:mouseleave="removeShipLocationPrevisualization" v-on:click="setShipLocation"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="col-3">
-                    <select id="shipType" name="shipType" v-model="comboBoxSelection" >
-                        <option value="carrier" selected>Carrier</option>
-                        <option value="battleship">Battleship</option>
-                        <option value="submarine">Submarine</option>
-                        <option value="destroyer">Destroyer</option>
-                        <option value="patrolboat">Patrol Boat</option>
-                    </select>
-                    <br>
-                    <input type="radio" id="horizontal" name="orientation" value="horizontal" v-model="radioSelection">
-                    <label for="horizontal">Horizontal</label><br>
-                    <input type="radio" id="vertical" name="orientation" value="vertical" v-model="radioSelection">
-                    <label for="vertical">Vertical</label><br>
-                    <button v-on:click="saveShips(gamePlayerId)">Save ship locations</button>
-                    <button v-on:click="">Clear</button>
                 </div>
             </div>
         </div>

@@ -196,3 +196,17 @@ nav {
 .setShipsPrevisualization {
     background-color: rgb(0, 253, 127);
 }
+
+.vs {
+    position: relative;
+    top: 150px;
+}
+
+input[type="radio"] {
+    margin-left: 10px;
+}
+
+.locateShipsButtons {
+    text-align: center;
+    margin-top: 25px;
+}

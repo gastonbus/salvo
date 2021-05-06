@@ -15,7 +15,6 @@ var app = new Vue({
         comboBoxSelection: "Select a ship",
         radioSelection: "horizontal",
         shipClass: "",
-        // shipTypes: ["carrier", "battleship", "submarine", "destroyer", "patrolboat"],
         previsualizationArray: [],
         playerAShipLocationsForPost: [],
         shipsSetted: false,
@@ -70,6 +69,7 @@ var app = new Vue({
                 })
                 .then(data => {
                     app.game = data;
+                    app.shipsSetted = app.game.ships.length > 0;
                     app.savePlayers();
                     app.locateShips();
                     app.showFiredSalvoes();
@@ -82,8 +82,9 @@ var app = new Vue({
                     window.location.href = "games.html";
                 })
         },
+        //generates an array (app.previsualizationArray) with the cells that have to be painted.
         extendSelectionOfShipLocation: function (event) {
-            var cell = event.target.id;
+            var cell = event.target.id.replace('ships-', "");
             var shipLength;
             app.previsualizationArray = [];
             switch (app.comboBoxSelection) {
@@ -127,7 +128,6 @@ var app = new Vue({
                     }
                 }
             }
-            //generates an array (app.previsualizationArray) with the cells that have to be painted.
         },
         isShipPositionAvailable: function () {
             var available = true;
@@ -140,30 +140,31 @@ var app = new Vue({
             })
             return available;
         },
+        //on mouseenter
         showShipLocationPrevisualization: function (event) {
             app.extendSelectionOfShipLocation(event);
             if (!app.playerAShipLocationsForPost.some(ship => ship.type == app.comboBoxSelection.toLowerCase())) {
                 if (app.isShipPositionAvailable()) {
                     app.previsualizationArray.forEach(cell => {
-                        document.getElementById(cell).classList.add(shipClass + 'Prev');
+                        document.getElementById('ships-' + cell).classList.add(shipClass + 'Prev');
                     })
                 }
             } else {
                 if (app.isShipPositionAvailable()) {
                     app.previsualizationArray.forEach(cell => {
-                        document.getElementById(cell).classList.add(shipClass + 'Prev');
+                        document.getElementById('ships-' + cell).classList.add(shipClass + 'Prev');
                     })
                 }
             }
         },
+        //on mouseout
         removeShipLocationPrevisualization: function () {
             app.previsualizationArray.forEach(cell => {
-                document.getElementById(cell).classList.remove(shipClass + 'Prev');
+                document.getElementById('ships-' + cell).classList.remove(shipClass + 'Prev');
             })
         },
-        setShipLocation: function (
-            // event
-        ) {
+        //on click
+        setShipLocation: function (event) {
             if (!app.playerAShipLocationsForPost.some(ship => ship.type == app.comboBoxSelection.toLowerCase())) {
                 if (app.isShipPositionAvailable()) {
                     app.playerAShipLocationsForPost.push({
@@ -171,80 +172,54 @@ var app = new Vue({
                         locations: app.previsualizationArray
                     })
                     app.previsualizationArray.forEach(cell => {
-                        document.getElementById(cell).classList.add(shipClass);
+                        document.getElementById('ships-' + cell).classList = shipClass;
                     })
                 }
             } else {
                 if (app.isShipPositionAvailable()) {
                     var actualShip = app.playerAShipLocationsForPost.find(ship => ship.type == app.comboBoxSelection.toLowerCase());
                     actualShip.locations.forEach(cell => {
-                        document.getElementById(cell).classList.remove(shipClass)
+                        document.getElementById('ships-' + cell).classList.remove(shipClass)
                     })
                     app.previsualizationArray.forEach(cell => {
-                        document.getElementById(cell).classList.add(shipClass);
+                        document.getElementById('ships-' + cell).classList = shipClass;
                     })
                     actualShip.locations = app.previsualizationArray;
                 }
             }
         },
-        clearGrid: function() {
-            // procedure to clear the grid:
-            // app.playerAShipLocationsForPost = [];
-            // document.getElementsByClassName("clear").classList.remove("carrier");
-            // document.getElementsByClassName("clear").classList.remove("battleship");
-            // document.getElementsByClassName("clear").classList.remove("submarine");
-            // document.getElementsByClassName("clear").classList.remove("destroyer");
-            // document.getElementsByClassName("clear").classList.remove("patrolboat");
+        clearGrid: function () {
+            app.playerAShipLocationsForPost.forEach(ship =>
+                ship.locations.forEach(location =>
+                    document.getElementById('ships-' + location).className = ""));
+            app.playerAShipLocationsForPost = [];
         },
-       saveShips: function (gamePlayerId) {
-            $.post({
-                    url: "/api/games/players/" + gamePlayerId + "/ships",
-                    data: JSON.stringify([
-                        {
-                            type: "carrier", 
-                            locations: ["C4", "D4", "E4", "F4", "G4"]
-                        },        
-                        {
-                            type: "battleship",
-                            locations: ["E6", "E7", "E8", "E9"]
-                        },
-                        {
-                            type: "submarine",
-                            locations: ["G1", "H1", "I1"]
-                        },
-                        {
-                            type: "destroyer",
-                            locations: ["J5", "J6", "J7"]
-                        },
-                        {
-                            type: "patrolboat",
-                            locations: ["H10", "I10"]
-                        }
-                    ]
-                    ),
-                    dataType: "text",
-                    contentType: "application/json"
-                })
-                //if successful
-                .done(function (response, status, jqXHR) {
-                    //recargar pagina (si es que está en game.html, y sino ir a game.html?gp=xx)
-                    //tener cuidado de que tambien tiene que haber terminado de cargar sus ships el oponente
-                    // alert( "Ships added: " + response );
-                    app.shipsSetted = true;
-                    window.location.href = "game.html?gp=" + gamePlayerId;
-                })
-                .fail(function (jqXHR, status, httpError) {
-                    alert("Failed to add ships: " + httpError);
-                })
+        saveShips: function (gamePlayerId) {
+            if (app.playerAShipLocationsForPost.length == 5) {
+                $.post({
+                        url: "/api/games/players/" + gamePlayerId + "/ships",
+                        data: JSON.stringify(app.playerAShipLocationsForPost),
+                        dataType: "text",
+                        contentType: "application/json"
+                    })
+                    .done(function (response, status, jqXHR) {
+                        //recargar pagina (si es que está en game.html, y sino ir a game.html?gp=xx)
+                        //tener cuidado de que tambien tiene que haber terminado de cargar sus ships el oponente
+                        window.location.href = "game.html?gp=" + gamePlayerId;
+                    })
+                    .fail(function (jqXHR, status, httpError) {
+                        alert("There was an error. Try again, please.");
+                    })                
+            } else {
+                alert("You have to locate all the ships.")
+            }
         },
         logout: function () {
             $.post("/api/logout")
-            .done(function () {
-                app.authenticatedPlayer = null;
-                // alert("Usted ha salido.")
-                window.location.href = "games.html";
-                // console.log("logged out")
-            })
+                .done(function () {
+                    app.authenticatedPlayer = null;
+                    window.location.href = "games.html";
+                })
         },
     },
     mounted: function () {
