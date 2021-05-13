@@ -41,7 +41,10 @@
                         <tbody>
                             <tr v-for="row in rows">
                                 <th>{{row}}</th>
-                                <td v-for="column in columns" v-bind:id="'ships-' + row + column" v-on:mouseenter="showShipLocationPrevisualization" v-on:mouseleave="removeShipLocationPrevisualization" v-on:click="setShipLocation"></td>
+                                <td v-for="column in columns" v-bind:id="'ships-' + row + column"
+                                    v-on:mouseenter="showShipLocationPrevisualization"
+                                    v-on:mouseleave="removeShipLocationPrevisualization" v-on:click="setShipLocation">
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -50,7 +53,8 @@
                     </div>
                     <div v-if="shipsSetted == false">
                         <div>
-                            <p class="text-start">Please, locate each ship and then press the "Save ships locations" button.</p>
+                            <p class="text-start">Please, locate each ship and then press the "Save ships locations"
+                                button.</p>
                             <select id="shipType" name="shipType" v-model="comboBoxSelection">
                                 <option value="Select a ship" disabled hidden>Select a ship</option>
                                 <option value="carrier">Carrier</option>
@@ -59,14 +63,17 @@
                                 <option value="destroyer">Destroyer</option>
                                 <option value="patrolboat">Patrol Boat</option>
                             </select>
-                            <input type="radio" id="horizontal" name="orientation" value="horizontal" v-model="radioSelection">
+                            <input type="radio" id="horizontal" name="orientation" value="horizontal"
+                                v-model="radioSelection">
                             <label for="horizontal">Horizontal</label>
-                            <input type="radio" id="vertical" name="orientation" value="vertical" v-model="radioSelection">
+                            <input type="radio" id="vertical" name="orientation" value="vertical"
+                                v-model="radioSelection">
                             <label for="vertical">Vertical</label><br>
                         </div>
                         <div class="locateShipsButtons">
                             <button class="btn btn-danger" v-on:click="clearGrid">Clear</button>
-                            <button class="btn btn-info" v-on:click="saveShips(gamePlayerId)">Save ship locations</button>
+                            <button class="btn btn-info" v-on:click="saveShips(gamePlayerId)">Save ship
+                                locations</button>
                         </div>
 
                     </div>
@@ -86,12 +93,18 @@
                         <tbody>
                             <tr v-for="row in rows">
                                 <th>{{row}}</th>
-                                <td v-for="column in columns" v-bind:id="'salvoes-' + row + column"></td>
+                                <td v-for="column in columns" v-bind:id="'salvoes-' + row + column"
+                                    v-on:mouseenter="showSalvoLocationPrevisualization"
+                                    v-on:mouseleave="removeSalvoLocationPrevisualization" v-on:click="setSalvoLocation">
+                                </td>
                             </tr>
                         </tbody>
                     </table>
                     <div class="underTableText">
                         <p>This is your salvo's board</p>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-danger btn-lg" v-on:click="saveSalvo(gamePlayerId)">****** Shoot! ******</button>
                     </div>
                 </div>
             </div>

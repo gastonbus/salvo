@@ -30,6 +30,9 @@ public class SalvoController {
     private ShipRepository shipRepository;
 
 	@Autowired
+	private SalvoRepository salvoRepository;
+
+	@Autowired
 	private PasswordEncoder passwordEncoder;
 
 	@GetMapping("/players")
@@ -198,12 +201,75 @@ public class SalvoController {
 			return new ResponseEntity<>(makeMap("error", "The request does not contains 5 ships."), HttpStatus.FORBIDDEN);
 		}
 
-		//Save the ships corresponding to the authenticated player
+		//Save the ships corresponding to the authenticated player for this game
 		for (Ship ship:ships) {
 			shipRepository.save(new Ship(gamePlayer, ship.getType(), ship.getLocations()));
 		}
 		return new ResponseEntity<>(makeMap("gpid", gamePlayer.getId()), HttpStatus.CREATED);
 	}
+
+	@GetMapping("/games/players/{gamePlayerId}/salvoes")
+	public ResponseEntity<Map<String, Object>> getSalvoes(@PathVariable Long gamePlayerId, Authentication authentication) {
+
+		//Verify if user is authenticated or not
+		if(isGuest(authentication)) {
+			return new ResponseEntity<>(makeMap("error", "You are not logged in!"), HttpStatus.UNAUTHORIZED);
+		}
+
+		//Verify if this combination of game and player (gamePlayer) exists.
+		Player authenticatedPlayer = playerRepository.findByUserName(authentication.getName());
+		Optional<GamePlayer> optGamePlayer = gamePlayerRepository.findById(gamePlayerId);
+		if (optGamePlayer.isEmpty()) {
+			return new ResponseEntity<>(makeMap("error", "That game does not correspond to any player."), HttpStatus.BAD_REQUEST);
+		}
+
+		//Verify if this player is playing the game requested.
+		GamePlayer gamePlayer = optGamePlayer.get();
+		if(!(authenticatedPlayer.getId() == gamePlayer.getPlayer().getId())) {
+			return new ResponseEntity<>(makeMap("error", "This is not your game. Don't try to cheat!"), HttpStatus.FORBIDDEN);
+		}
+
+		return new ResponseEntity<>(makeGameViewDTO(gamePlayer), HttpStatus.OK);
+	}
+
+
+	@PostMapping("/games/players/{gamePlayerId}/salvoes")
+	public ResponseEntity<Map<String, Object>> locateSalvoes(@PathVariable Long gamePlayerId, @RequestBody Salvo salvo, Authentication authentication) {
+		//Verify if user is authenticated or not
+		if (isGuest(authentication)) {
+			return new ResponseEntity<>(makeMap("error", "You are not logged in!"), HttpStatus.UNAUTHORIZED);
+		}
+
+		//Verify if this combination of game and player (gamePlayer) exists.
+		Optional<GamePlayer> optGamePlayer = gamePlayerRepository.findById(gamePlayerId);
+		if (optGamePlayer.isEmpty()) {
+			return new ResponseEntity<>(makeMap("error", "The gamePlayer requested does not exist."), HttpStatus.FORBIDDEN);
+		}
+
+		//Verify if this player is playing the game requested.
+		Player authenticatedPlayer = playerRepository.findByUserName(authentication.getName());
+		GamePlayer gamePlayer = optGamePlayer.get();
+		if(authenticatedPlayer.getId() != gamePlayer.getPlayer().getId()) {
+			return new ResponseEntity<>(makeMap("error", "This game does not correspond to this player."), HttpStatus.FORBIDDEN);
+		}
+
+		//Validate if the player has not fired all the salvoes.
+		if (gamePlayer.getSalvoes().size() > 20) {
+			return new ResponseEntity<>(makeMap("error", "You've just fired all your salvoes."), HttpStatus.FORBIDDEN);
+		}
+
+		//Validate if the request contains 5 shots.
+		if (salvo.getLocations().size() != 5) {
+			return new ResponseEntity<>(makeMap("error", "The request does not contains 5 shots."), HttpStatus.FORBIDDEN);
+		}
+
+		//Save the salvoes corresponding to the authenticated player for this turn in this game
+		salvoRepository.save(new Salvo(gamePlayer, salvo.getTurn(), salvo.getLocations()));
+
+		return new ResponseEntity<>(makeMap("gpid", gamePlayer.getId()), HttpStatus.CREATED);
+	}
+
+
 
 	public Map<String, Object> makeGamesDTO(Game game) {
 		Map<String, Object> dto = new LinkedHashMap<>();

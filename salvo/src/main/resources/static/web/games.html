@@ -46,7 +46,7 @@
                     <div class="d-grid gap-2 ">
                         <button class="btn btn-primary btn-lg btn-lg newGameButton" v-on:click="createGame()" v-if="authenticatedPlayer != null">Create New Game</button>
                     </div>
-                    <nav class="overflow-auto">
+                    <nav class="overflow-auto gamesList">
                         <ol>
                             <li v-for="game in games">{{game.date}} <button class="btn btn-warning btn-sm sideButton" v-if="authenticatedPlayer != null && game.gamePlayers.length < 2 && authenticatedPlayer.id != game.gamePlayers[0].player.id" v-on:click="joinGame(game.id)">Join</button>
                                 <ul>

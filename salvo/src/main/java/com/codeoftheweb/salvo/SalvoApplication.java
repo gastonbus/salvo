@@ -184,12 +184,12 @@ public class SalvoApplication extends SpringBootServletInitializer {
 //			shipRepository.save(new Ship(gamePlayer13, "Destroyer", Arrays.asList("I7", "I8", "I9")));
 //			shipRepository.save(new Ship(gamePlayer13, "Patrol Boat", Arrays.asList("F1", "G1")));
 //
-//			salvoRepository.save(new Salvo(gamePlayer1, 1, Arrays.asList("B1", "B7", "E6", "F3", "F8")));
-//			salvoRepository.save(new Salvo(gamePlayer2, 1, Arrays.asList("B2", "B8", "E5", "H2", "J8")));
-//			salvoRepository.save(new Salvo(gamePlayer1, 2, Arrays.asList("B4", "C10", "F3", "H1", "H5")));
-//			salvoRepository.save(new Salvo(gamePlayer2, 2, Arrays.asList("C4", "E10", "G1", "G10", "J4")));
-//			salvoRepository.save(new Salvo(gamePlayer1, 3, Arrays.asList("B9", "D1", "D3", "D5", "H8")));
-//			salvoRepository.save(new Salvo(gamePlayer2, 3, Arrays.asList("B6", "B10", "D2", "G6", "H9")));
+			salvoRepository.save(new Salvo(gamePlayer1, 1, Arrays.asList("B1", "B7", "E6", "F3", "F8")));
+			salvoRepository.save(new Salvo(gamePlayer2, 1, Arrays.asList("B2", "B8", "E5", "H2", "J8")));
+			salvoRepository.save(new Salvo(gamePlayer1, 2, Arrays.asList("B4", "C10", "F3", "H1", "H5")));
+			salvoRepository.save(new Salvo(gamePlayer2, 2, Arrays.asList("C4", "E10", "G1", "G10", "J4")));
+			salvoRepository.save(new Salvo(gamePlayer1, 3, Arrays.asList("B9", "D1", "D3", "D5", "H8")));
+			salvoRepository.save(new Salvo(gamePlayer2, 3, Arrays.asList("B6", "B10", "D2", "G6", "H9")));
 
 			scoreRepository.save(new Score(0.5, LocalDateTime.now(), game1, player1));
 			scoreRepository.save(new Score(0.5, LocalDateTime.now(), game1, player2));

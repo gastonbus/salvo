@@ -1,0 +1,31 @@
+Variables necesarias:
+salvoForPost: {
+    turn: 0,
+    locations: ["A3", "A4", "A5", "A6", "A7"]
+}
+turn: 0
+
+
+Al pasar el mouse por encima de la celda(){
+    if(la celda actual no existe en el array salvoForPost.locations){
+        pintar celda con color tenue.
+    }
+}
+
+Al sacar el mouse de la celda() {
+    if(la celda actual no existe en el array salvoForPost.locations){
+        despintar la celda.
+    }
+}
+
+Al hacer click con el mouse() {
+    obtener el id de la celda ("A4", por ej) y pushearlo en el array (salvoForPost.locations);
+    pintar la celda con color intenso;
+}
+
+Al hacer click sobre el boton "Shoot!"(){
+    hacer el post al server con los datos contenidos en salvoForPost y turn;
+    vaciar el arreglo de salvoForPost.
+}
+
+Agregar boton para vaciar la grilla y poder reacomodar los disparos... se puede agregar la funcion clearGrid() que ya existe.

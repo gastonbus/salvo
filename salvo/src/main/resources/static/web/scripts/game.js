@@ -15,9 +15,13 @@ var app = new Vue({
         comboBoxSelection: "Select a ship",
         radioSelection: "horizontal",
         shipClass: "",
-        previsualizationArray: [],
+        shipsPrevisualizationArray: [],
         playerAShipLocationsForPost: [],
         shipsSetted: false,
+        salvoForPost: {
+            turn: 0,
+            locations: []
+        },
     },
     methods: {
         savePlayers: function () {
@@ -82,11 +86,11 @@ var app = new Vue({
                     window.location.href = "games.html";
                 })
         },
-        //generates an array (app.previsualizationArray) with the cells that have to be painted.
+        //generates an array (app.shipsPrevisualizationArray) with the cells that have to be painted.
         extendSelectionOfShipLocation: function (event) {
             var cell = event.target.id.replace('ships-', "");
             var shipLength;
-            app.previsualizationArray = [];
+            app.shipsPrevisualizationArray = [];
             switch (app.comboBoxSelection) {
                 case "carrier":
                     shipLength = 5;
@@ -116,14 +120,14 @@ var app = new Vue({
             if (app.radioSelection == "horizontal") {
                 if (columnNum <= (10 - (shipLength - 1))) {
                     for (let i = 0; i < shipLength; i++) {
-                        app.previsualizationArray.push(rowString + columnNum);
+                        app.shipsPrevisualizationArray.push(rowString + columnNum);
                         columnNum++;
                     }
                 }
             } else if (app.radioSelection == "vertical") {
                 if (rowNum <= (10 - (shipLength - 1))) {
                     for (let i = 0; i < shipLength; i++) {
-                        app.previsualizationArray.push(app.rows[rowNum - 1] + columnNum);
+                        app.shipsPrevisualizationArray.push(app.rows[rowNum - 1] + columnNum);
                         rowNum++;
                     }
                 }
@@ -133,7 +137,7 @@ var app = new Vue({
             var available = true;
             app.playerAShipLocationsForPost.filter(ship => ship.type != app.comboBoxSelection).forEach(ship => {
                 ship.locations.forEach(location => {
-                    if (app.previsualizationArray.includes(location)) {
+                    if (app.shipsPrevisualizationArray.includes(location)) {
                         available = false;
                     }
                 })
@@ -145,13 +149,13 @@ var app = new Vue({
             app.extendSelectionOfShipLocation(event);
             if (!app.playerAShipLocationsForPost.some(ship => ship.type == app.comboBoxSelection.toLowerCase())) {
                 if (app.isShipPositionAvailable()) {
-                    app.previsualizationArray.forEach(cell => {
+                    app.shipsPrevisualizationArray.forEach(cell => {
                         document.getElementById('ships-' + cell).classList.add(shipClass + 'Prev');
                     })
                 }
             } else {
                 if (app.isShipPositionAvailable()) {
-                    app.previsualizationArray.forEach(cell => {
+                    app.shipsPrevisualizationArray.forEach(cell => {
                         document.getElementById('ships-' + cell).classList.add(shipClass + 'Prev');
                     })
                 }
@@ -159,7 +163,7 @@ var app = new Vue({
         },
         //on mouseout
         removeShipLocationPrevisualization: function () {
-            app.previsualizationArray.forEach(cell => {
+            app.shipsPrevisualizationArray.forEach(cell => {
                 document.getElementById('ships-' + cell).classList.remove(shipClass + 'Prev');
             })
         },
@@ -169,9 +173,9 @@ var app = new Vue({
                 if (app.isShipPositionAvailable()) {
                     app.playerAShipLocationsForPost.push({
                         type: app.comboBoxSelection,
-                        locations: app.previsualizationArray
+                        locations: app.shipsPrevisualizationArray
                     })
-                    app.previsualizationArray.forEach(cell => {
+                    app.shipsPrevisualizationArray.forEach(cell => {
                         document.getElementById('ships-' + cell).classList = shipClass;
                     })
                 }
@@ -181,10 +185,10 @@ var app = new Vue({
                     actualShip.locations.forEach(cell => {
                         document.getElementById('ships-' + cell).classList.remove(shipClass)
                     })
-                    app.previsualizationArray.forEach(cell => {
+                    app.shipsPrevisualizationArray.forEach(cell => {
                         document.getElementById('ships-' + cell).classList = shipClass;
                     })
-                    actualShip.locations = app.previsualizationArray;
+                    actualShip.locations = app.shipsPrevisualizationArray;
                 }
             }
         },
@@ -209,7 +213,66 @@ var app = new Vue({
                     })
                     .fail(function (jqXHR, status, httpError) {
                         alert("There was an error. Try again, please.");
-                    })                
+                    })
+            } else {
+                alert("You have to locate all the ships.")
+            }
+        },
+        isSalvoLocationAvailable: function (cell) {
+            var available = true;
+            if (app.salvoForPost.locations.includes(cell)) {
+                available = false
+            }
+
+            app.playerASalvoes.forEach(salvo => {
+                if (salvo.locations.includes(cell)) {
+                    available = false
+                }
+            })
+
+            return available;
+        },
+        showSalvoLocationPrevisualization: function (event) {
+            if (app.shipsSetted) {
+                if (app.isSalvoLocationAvailable(event.target.id.replace('salvoes-', ""))) {
+                    if (app.salvoForPost.locations.length < 5) {
+                        document.getElementById(event.target.id).classList.add("shotPrev");
+                    }
+                }
+            }
+
+        },
+        removeSalvoLocationPrevisualization: function (event) {
+            document.getElementById(event.target.id).classList.remove("shotPrev");
+        },
+        setSalvoLocation: function (event) {
+            if (app.shipsSetted) {
+                if (app.salvoForPost.locations.length < 5) {
+                    if (app.isSalvoLocationAvailable()) {
+                        document.getElementById(event.target.id).classList.add("shot");
+                        app.salvoForPost.locations.push(event.target.id.replace('salvoes-', ""));
+                    }
+                }
+            }
+        },
+        saveSalvo: function (gamePlayerId) {
+            if (app.salvoForPost.locations.length == 5) {
+                app.salvoForPost.turn = app.playerASalvoes.length + 1;
+
+            $.post({
+                    url: "/api/games/players/" + gamePlayerId + "/salvoes",
+                    data: JSON.stringify(app.salvoForPost),
+                    dataType: "text",
+                    contentType: "application/json"
+                })
+                .done(function (response, status, jqXHR) {
+                    //recargar pagina (si es que está en game.html, y sino ir a game.html?gp=xx)
+                    //tener cuidado de que tambien tiene que haber terminado de cargar sus ships el oponente
+                    window.location.href = "game.html?gp=" + gamePlayerId;
+                })
+                .fail(function (jqXHR, status, httpError) {
+                    alert("There was an error. Try again, please.");
+                })
             } else {
                 alert("You have to locate all the ships.")
             }
