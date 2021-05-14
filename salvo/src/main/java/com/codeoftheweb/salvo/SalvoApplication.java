@@ -106,17 +106,17 @@ public class SalvoApplication extends SpringBootServletInitializer {
 			gamePlayerRepository.save(gamePlayer12);
 			gamePlayerRepository.save(gamePlayer13);
 
-			shipRepository.save(new Ship(gamePlayer1, "Carrier", Arrays.asList("C4", "D4", "E4", "F4", "G4")));
-			shipRepository.save(new Ship(gamePlayer1, "Battleship", Arrays.asList("E6", "E7", "E8", "E9")));
-			shipRepository.save(new Ship(gamePlayer1, "Submarine", Arrays.asList("G1", "H1", "I1")));
-			shipRepository.save(new Ship(gamePlayer1, "Destroyer", Arrays.asList("J5", "J6", "J7")));
-			shipRepository.save(new Ship(gamePlayer1, "Patrol Boat", Arrays.asList("H10", "I10")));
-
-			shipRepository.save(new Ship(gamePlayer2, "Carrier", Arrays.asList("H5", "H6", "H7", "H8", "H9")));
-			shipRepository.save(new Ship(gamePlayer2, "Battleship", Arrays.asList("C1", "D1", "E1", "F1")));
-			shipRepository.save(new Ship(gamePlayer2, "Submarine", Arrays.asList("A5", "A6", "A7")));
-			shipRepository.save(new Ship(gamePlayer2, "Destroyer", Arrays.asList("A10", "B10", "C10")));
-			shipRepository.save(new Ship(gamePlayer2, "Patrol Boat", Arrays.asList("J2", "J3")));
+//			shipRepository.save(new Ship(gamePlayer1, "Carrier", Arrays.asList("C4", "D4", "E4", "F4", "G4")));
+//			shipRepository.save(new Ship(gamePlayer1, "Battleship", Arrays.asList("E6", "E7", "E8", "E9")));
+//			shipRepository.save(new Ship(gamePlayer1, "Submarine", Arrays.asList("G1", "H1", "I1")));
+//			shipRepository.save(new Ship(gamePlayer1, "Destroyer", Arrays.asList("J5", "J6", "J7")));
+//			shipRepository.save(new Ship(gamePlayer1, "Patrol Boat", Arrays.asList("H10", "I10")));
+//
+//			shipRepository.save(new Ship(gamePlayer2, "Carrier", Arrays.asList("H5", "H6", "H7", "H8", "H9")));
+//			shipRepository.save(new Ship(gamePlayer2, "Battleship", Arrays.asList("C1", "D1", "E1", "F1")));
+//			shipRepository.save(new Ship(gamePlayer2, "Submarine", Arrays.asList("A5", "A6", "A7")));
+//			shipRepository.save(new Ship(gamePlayer2, "Destroyer", Arrays.asList("A10", "B10", "C10")));
+//			shipRepository.save(new Ship(gamePlayer2, "Patrol Boat", Arrays.asList("J2", "J3")));
 
 //			shipRepository.save(new Ship(gamePlayer3, "Carrier", Arrays.asList("F3", "G3", "H3", "I3", "J3")));
 //			shipRepository.save(new Ship(gamePlayer3, "Battleship", Arrays.asList("D6", "D7", "D8", "D9")));
@@ -184,25 +184,25 @@ public class SalvoApplication extends SpringBootServletInitializer {
 //			shipRepository.save(new Ship(gamePlayer13, "Destroyer", Arrays.asList("I7", "I8", "I9")));
 //			shipRepository.save(new Ship(gamePlayer13, "Patrol Boat", Arrays.asList("F1", "G1")));
 //
-			salvoRepository.save(new Salvo(gamePlayer1, 1, Arrays.asList("B1", "B7", "E6", "F3", "F8")));
-			salvoRepository.save(new Salvo(gamePlayer2, 1, Arrays.asList("B2", "B8", "E5", "H2", "J8")));
-			salvoRepository.save(new Salvo(gamePlayer1, 2, Arrays.asList("B4", "C10", "F3", "H1", "H5")));
-			salvoRepository.save(new Salvo(gamePlayer2, 2, Arrays.asList("C4", "E10", "G1", "G10", "J4")));
-			salvoRepository.save(new Salvo(gamePlayer1, 3, Arrays.asList("B9", "D1", "D3", "D5", "H8")));
-			salvoRepository.save(new Salvo(gamePlayer2, 3, Arrays.asList("B6", "B10", "D2", "G6", "H9")));
+//			salvoRepository.save(new Salvo(gamePlayer1, 1, Arrays.asList("B1", "B7", "E6", "F3", "F8")));
+//			salvoRepository.save(new Salvo(gamePlayer2, 1, Arrays.asList("B2", "B8", "E5", "H2", "J8")));
+//			salvoRepository.save(new Salvo(gamePlayer1, 2, Arrays.asList("B4", "C10", "F3", "H1", "H5")));
+//			salvoRepository.save(new Salvo(gamePlayer2, 2, Arrays.asList("C4", "E10", "G1", "G10", "J4")));
+//			salvoRepository.save(new Salvo(gamePlayer1, 3, Arrays.asList("B9", "D1", "D3", "D5", "H8")));
+//			salvoRepository.save(new Salvo(gamePlayer2, 3, Arrays.asList("B6", "B10", "D2", "G6", "H9")));
 
-			scoreRepository.save(new Score(0.5, LocalDateTime.now(), game1, player1));
-			scoreRepository.save(new Score(0.5, LocalDateTime.now(), game1, player2));
-			scoreRepository.save(new Score(0.0, LocalDateTime.now(), game2, player3));
-			scoreRepository.save(new Score(1.0, LocalDateTime.now(), game2, player4));
-			scoreRepository.save(new Score(0.5, LocalDateTime.now(), game3, player1));
-			scoreRepository.save(new Score(0.5, LocalDateTime.now(), game3, player4));
-			scoreRepository.save(new Score(1.0, LocalDateTime.now(), game4, player2));
-			scoreRepository.save(new Score(0.0, LocalDateTime.now(), game4, player4));
-			scoreRepository.save(new Score(1.0, LocalDateTime.now(), game5, player1));
-			scoreRepository.save(new Score(0.0, LocalDateTime.now(), game5, player3));
-			scoreRepository.save(new Score(1.0, LocalDateTime.now(), game6, player2));
-			scoreRepository.save(new Score(0.0, LocalDateTime.now(), game6, player4));
+//			scoreRepository.save(new Score(0.5, LocalDateTime.now(), game1, player1));
+//			scoreRepository.save(new Score(0.5, LocalDateTime.now(), game1, player2));
+//			scoreRepository.save(new Score(0.0, LocalDateTime.now(), game2, player3));
+//			scoreRepository.save(new Score(1.0, LocalDateTime.now(), game2, player4));
+//			scoreRepository.save(new Score(0.5, LocalDateTime.now(), game3, player1));
+//			scoreRepository.save(new Score(0.5, LocalDateTime.now(), game3, player4));
+//			scoreRepository.save(new Score(1.0, LocalDateTime.now(), game4, player2));
+//			scoreRepository.save(new Score(0.0, LocalDateTime.now(), game4, player4));
+//			scoreRepository.save(new Score(1.0, LocalDateTime.now(), game5, player1));
+//			scoreRepository.save(new Score(0.0, LocalDateTime.now(), game5, player3));
+//			scoreRepository.save(new Score(1.0, LocalDateTime.now(), game6, player2));
+//			scoreRepository.save(new Score(0.0, LocalDateTime.now(), game6, player4));
 		};
 	}
 }

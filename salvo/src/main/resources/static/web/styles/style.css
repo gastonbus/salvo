@@ -118,10 +118,11 @@ h1 {
 }
 
 .firedSalvoes {
-    background-color: aqua;
-    margin: 3px 3px 3px 3px;
-    font-size: 12px;
-    color: black;
+    font-size: 14px;
+    color: rgb(255, 255, 255) !important; 
+    font-weight: bold;
+    background-image: url('../img/water1.gif') !important;
+    background-size: contain;
 }
 
 .opponentSalvoes {

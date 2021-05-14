@@ -25,9 +25,9 @@ var app = new Vue({
     },
     methods: {
         savePlayers: function () {
-            app.players.playerA = app.game.gamePlayers.find(element => element.gpid == app.gamePlayerId).player;
+            app.players.playerA = app.game.gamePlayers.find(elem => elem.gpid == app.gamePlayerId).player;
             if (app.game.gamePlayers.length == 2) {
-                app.players.playerB = app.game.gamePlayers.find(element => element.gpid != app.gamePlayerId).player;
+                app.players.playerB = app.game.gamePlayers.find(elem => elem.gpid != app.gamePlayerId).player;
             }
         },
         locateShips: function () {
@@ -42,7 +42,8 @@ var app = new Vue({
             app.playerASalvoes = app.game.salvoes.filter(elem => elem.playerId == app.players.playerA.id);
             app.playerASalvoes.forEach(salvo => {
                 salvo.locations.forEach(location => {
-                    document.getElementById('salvoes-' + location).innerHTML = "<div class='firedSalvoes'>" + salvo.turn + "</div>";
+                    document.getElementById('salvoes-' + location).innerText = salvo.turn;
+                    document.getElementById('salvoes-' + location).classList.add('firedSalvoes');
                 })
             })
         },
@@ -86,9 +87,9 @@ var app = new Vue({
                     window.location.href = "games.html";
                 })
         },
-        //generates an array (app.shipsPrevisualizationArray) with the cells that have to be painted.
+        //generates an array (app.shipsPrevisualizationArray) with the Cell that have to be painted.
         extendSelectionOfShipLocation: function (event) {
-            var cell = event.target.id.replace('ships-', "");
+            var currentCell = event.target.id.replace('ships-', "");
             var shipLength;
             app.shipsPrevisualizationArray = [];
             switch (app.comboBoxSelection) {
@@ -114,8 +115,8 @@ var app = new Vue({
                     shipClass = "patrolboat";
                     break;
             }
-            var columnNum = parseInt(cell.replace(/^./, ""), 10);
-            var rowString = cell.charAt(0);
+            var columnNum = parseInt(currentCell.replace(/^./, ""), 10);
+            var rowString = currentCell.charAt(0);
             var rowNum = parseInt(app.rows.indexOf(rowString)) + 1;
             if (app.radioSelection == "horizontal") {
                 if (columnNum <= (10 - (shipLength - 1))) {
@@ -149,46 +150,48 @@ var app = new Vue({
             app.extendSelectionOfShipLocation(event);
             if (!app.playerAShipLocationsForPost.some(ship => ship.type == app.comboBoxSelection.toLowerCase())) {
                 if (app.isShipPositionAvailable()) {
-                    app.shipsPrevisualizationArray.forEach(cell => {
-                        document.getElementById('ships-' + cell).classList.add(shipClass + 'Prev');
+                    app.shipsPrevisualizationArray.forEach(currentCell => {
+                        document.getElementById('ships-' + currentCell).classList.add(shipClass + 'Prev');
                     })
                 }
             } else {
                 if (app.isShipPositionAvailable()) {
-                    app.shipsPrevisualizationArray.forEach(cell => {
-                        document.getElementById('ships-' + cell).classList.add(shipClass + 'Prev');
+                    app.shipsPrevisualizationArray.forEach(currentCell => {
+                        document.getElementById('ships-' + currentCell).classList.add(shipClass + 'Prev');
                     })
                 }
             }
         },
         //on mouseout
         removeShipLocationPrevisualization: function () {
-            app.shipsPrevisualizationArray.forEach(cell => {
-                document.getElementById('ships-' + cell).classList.remove(shipClass + 'Prev');
+            app.shipsPrevisualizationArray.forEach(currentCell => {
+                document.getElementById('ships-' + currentCell).classList.remove(shipClass + 'Prev');
             })
         },
         //on click
         setShipLocation: function (event) {
-            if (!app.playerAShipLocationsForPost.some(ship => ship.type == app.comboBoxSelection.toLowerCase())) {
-                if (app.isShipPositionAvailable()) {
-                    app.playerAShipLocationsForPost.push({
-                        type: app.comboBoxSelection,
-                        locations: app.shipsPrevisualizationArray
-                    })
-                    app.shipsPrevisualizationArray.forEach(cell => {
-                        document.getElementById('ships-' + cell).classList = shipClass;
-                    })
-                }
-            } else {
-                if (app.isShipPositionAvailable()) {
-                    var actualShip = app.playerAShipLocationsForPost.find(ship => ship.type == app.comboBoxSelection.toLowerCase());
-                    actualShip.locations.forEach(cell => {
-                        document.getElementById('ships-' + cell).classList.remove(shipClass)
-                    })
-                    app.shipsPrevisualizationArray.forEach(cell => {
-                        document.getElementById('ships-' + cell).classList = shipClass;
-                    })
-                    actualShip.locations = app.shipsPrevisualizationArray;
+            if (app.comboBoxSelection != "Select a ship") {
+                if (!app.playerAShipLocationsForPost.some(ship => ship.type == app.comboBoxSelection.toLowerCase())) {
+                    if (app.isShipPositionAvailable()) {
+                        app.playerAShipLocationsForPost.push({
+                            type: app.comboBoxSelection,
+                            locations: app.shipsPrevisualizationArray
+                        })
+                        app.shipsPrevisualizationArray.forEach(currentCell => {
+                            document.getElementById('ships-' + currentCell).classList = shipClass;
+                        })
+                    }
+                } else {
+                    if (app.isShipPositionAvailable()) {
+                        var actualShip = app.playerAShipLocationsForPost.find(ship => ship.type == app.comboBoxSelection.toLowerCase());
+                        actualShip.locations.forEach(currentCell => {
+                            document.getElementById('ships-' + currentCell).classList.remove(shipClass)
+                        })
+                        app.shipsPrevisualizationArray.forEach(currentCell => {
+                            document.getElementById('ships-' + currentCell).classList = shipClass;
+                        })
+                        actualShip.locations = app.shipsPrevisualizationArray;
+                    }
                 }
             }
         },
@@ -218,14 +221,14 @@ var app = new Vue({
                 alert("You have to locate all the ships.")
             }
         },
-        isSalvoLocationAvailable: function (cell) {
+        isSalvoLocationAvailable: function (currentCell) {
             var available = true;
-            if (app.salvoForPost.locations.includes(cell)) {
+            if (app.salvoForPost.locations.includes(currentCell)) {
                 available = false
             }
 
             app.playerASalvoes.forEach(salvo => {
-                if (salvo.locations.includes(cell)) {
+                if (salvo.locations.includes(currentCell)) {
                     available = false
                 }
             })
@@ -246,33 +249,40 @@ var app = new Vue({
             document.getElementById(event.target.id).classList.remove("shotPrev");
         },
         setSalvoLocation: function (event) {
+            var currentCell = event.target.id.replace('salvoes-', "");
             if (app.shipsSetted) {
-                if (app.salvoForPost.locations.length < 5) {
-                    if (app.isSalvoLocationAvailable()) {
-                        document.getElementById(event.target.id).classList.add("shot");
-                        app.salvoForPost.locations.push(event.target.id.replace('salvoes-', ""));
+                if (app.salvoForPost.locations.includes(currentCell)) {
+                    document.getElementById(event.target.id).classList.remove("shot");
+                    app.salvoForPost.locations.splice(app.salvoForPost.locations.indexOf(currentCell), 1);
+                } else {
+                    if (app.isSalvoLocationAvailable(currentCell)) {
+                        if (app.salvoForPost.locations.length < 5) {
+                            document.getElementById(event.target.id).classList.add("shot");
+                            app.salvoForPost.locations.push(currentCell);
+                        }
                     }
                 }
             }
         },
         saveSalvo: function (gamePlayerId) {
             if (app.salvoForPost.locations.length == 5) {
+                
                 app.salvoForPost.turn = app.playerASalvoes.length + 1;
 
-            $.post({
-                    url: "/api/games/players/" + gamePlayerId + "/salvoes",
-                    data: JSON.stringify(app.salvoForPost),
-                    dataType: "text",
-                    contentType: "application/json"
-                })
-                .done(function (response, status, jqXHR) {
-                    //recargar pagina (si es que está en game.html, y sino ir a game.html?gp=xx)
-                    //tener cuidado de que tambien tiene que haber terminado de cargar sus ships el oponente
-                    window.location.href = "game.html?gp=" + gamePlayerId;
-                })
-                .fail(function (jqXHR, status, httpError) {
-                    alert("There was an error. Try again, please.");
-                })
+                $.post({
+                        url: "/api/games/players/" + gamePlayerId + "/salvoes",
+                        data: JSON.stringify(app.salvoForPost),
+                        dataType: "text",
+                        contentType: "application/json"
+                    })
+                    .done(function (response, status, jqXHR) {
+                        //recargar pagina (si es que está en game.html, y sino ir a game.html?gp=xx)
+                        //tener cuidado de que tambien tiene que haber terminado de cargar sus ships el oponente
+                        window.location.href = "game.html?gp=" + gamePlayerId;
+                    })
+                    .fail(function (jqXHR, status, httpError) {
+                        alert("There was an error. Try again, please.");
+                    })
             } else {
                 alert("You have to locate all the ships.")
             }

@@ -258,6 +258,14 @@ public class SalvoController {
 			return new ResponseEntity<>(makeMap("error", "You've just fired all your salvoes."), HttpStatus.FORBIDDEN);
 		}
 
+		//Validate if the opponent has shot his salvo and it is the turn of the player.
+		Optional<GamePlayer> opponent = gamePlayer.getGame().getGamePlayers().stream().filter(elem -> elem.getId() != gamePlayer.getId()).findFirst();
+		if (opponent.isPresent()) {
+			if (gamePlayer.getSalvoes().size() - opponent.get().getSalvoes().size() >= 1) {
+				return new ResponseEntity<>(makeMap("error", "You must wait for your opponent to make his shots."), HttpStatus.FORBIDDEN);
+			}
+		}
+
 		//Validate if the request contains 5 shots.
 		if (salvo.getLocations().size() != 5) {
 			return new ResponseEntity<>(makeMap("error", "The request does not contains 5 shots."), HttpStatus.FORBIDDEN);

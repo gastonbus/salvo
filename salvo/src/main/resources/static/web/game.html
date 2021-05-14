@@ -63,12 +63,16 @@
                                 <option value="destroyer">Destroyer</option>
                                 <option value="patrolboat">Patrol Boat</option>
                             </select>
-                            <input type="radio" id="horizontal" name="orientation" value="horizontal"
-                                v-model="radioSelection">
-                            <label for="horizontal">Horizontal</label>
-                            <input type="radio" id="vertical" name="orientation" value="vertical"
-                                v-model="radioSelection">
-                            <label for="vertical">Vertical</label><br>
+                            <div>
+                                <input type="radio" id="horizontal" name="orientation" value="horizontal"
+                                    v-model="radioSelection">
+                                <label for="horizontal">Horizontal</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="vertical" name="orientation" value="vertical"
+                                    v-model="radioSelection">
+                                <label for="vertical">Vertical</label><br>
+                            </div>
                         </div>
                         <div class="locateShipsButtons">
                             <button class="btn btn-danger" v-on:click="clearGrid">Clear</button>
@@ -104,7 +108,8 @@
                         <p>This is your salvo's board</p>
                     </div>
                     <div class="d-grid gap-2">
-                        <button class="btn btn-danger btn-lg" v-on:click="saveSalvo(gamePlayerId)">****** Shoot! ******</button>
+                        <button class="btn btn-danger btn-lg" v-on:click="saveSalvo(gamePlayerId)">****** Shoot!
+                            ******</button>
                     </div>
                 </div>
             </div>
