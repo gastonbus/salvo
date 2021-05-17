@@ -264,6 +264,8 @@ public class SalvoController {
 			if (gamePlayer.getSalvoes().size() - opponent.get().getSalvoes().size() >= 1) {
 				return new ResponseEntity<>(makeMap("error", "You must wait for your opponent to make his shots."), HttpStatus.FORBIDDEN);
 			}
+		} else {
+			return new ResponseEntity<>(makeMap("error", "There is no opponent yet."), HttpStatus.FORBIDDEN);
 		}
 
 		//Validate if the request contains 5 shots.

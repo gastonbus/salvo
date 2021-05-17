@@ -52,10 +52,12 @@ var app = new Vue({
             app.playerBSalvoes.forEach(salvo => {
                 salvo.locations.forEach(location => {
                     if (app.playerAShipsLocations.includes(location)) {
-                        document.getElementById('ships-' + location).innerHTML = "<div class='opponentSuccessfulShot'>" + salvo.turn + "</div>";
+                    document.getElementById('ships-' + location).innerText = salvo.turn;
+                    document.getElementById('ships-' + location).classList.add('opponentSuccessfulShot');
                     } else {
-                        document.getElementById('ships-' + location).innerHTML = "<div class='opponentSalvoes'>" + salvo.turn + "</div>";
-                    }
+                        document.getElementById('ships-' + location).innerText = salvo.turn;
+                        document.getElementById('ships-' + location).classList.add('opponentSalvoes');
+                        }
                 })
             })
         },
@@ -215,7 +217,7 @@ var app = new Vue({
                         window.location.href = "game.html?gp=" + gamePlayerId;
                     })
                     .fail(function (jqXHR, status, httpError) {
-                        alert("There was an error. Try again, please.");
+                        alert(JSON.parse(jqXHR.responseText).error);
                     })
             } else {
                 alert("You have to locate all the ships.")
@@ -281,10 +283,10 @@ var app = new Vue({
                         window.location.href = "game.html?gp=" + gamePlayerId;
                     })
                     .fail(function (jqXHR, status, httpError) {
-                        alert("There was an error. Try again, please.");
+                        alert(JSON.parse(jqXHR.responseText).error);
                     })
             } else {
-                alert("You have to locate all the ships.")
+                alert("You have to locate all the salvoes.")
             }
         },
         logout: function () {

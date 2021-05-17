@@ -118,25 +118,32 @@ h1 {
 }
 
 .firedSalvoes {
-    font-size: 14px;
+    font-size: 16px;
     color: rgb(255, 255, 255) !important; 
-    font-weight: bold;
+    /* font-weight: bolder; */
     background-image: url('../img/water1.gif') !important;
     background-size: contain;
 }
 
 .opponentSalvoes {
-    background-color: rgb(0, 0, 0);
-    margin: 2px 2px 2px 2px;
-    font-size: 12px;
+    /* background-color: rgb(0, 0, 0); */
+    /* margin: 2px 2px 2px 2px; */
+    font-size: 16px;
     color: white;
+    background-image: url('../img/water1.gif') !important;
+    background-size: contain;
 }
 
 .opponentSuccessfulShot {
-    background-color: gray;
-    margin: 2px 2px 2px 2px;
-    font-size: 12px;
-    color: white;
+    /* background-color: gray; */
+    background-image: url('../img/flame2.gif') !important;
+    background-size: contain;
+    /* margin: 2px 2px 2px 2px; */
+    font-size: 14px;
+    color: rgb(0, 0, 0) !important;
+    font-weight: bold;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .sideButton {

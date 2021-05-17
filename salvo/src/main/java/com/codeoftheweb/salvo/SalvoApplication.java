@@ -106,83 +106,83 @@ public class SalvoApplication extends SpringBootServletInitializer {
 			gamePlayerRepository.save(gamePlayer12);
 			gamePlayerRepository.save(gamePlayer13);
 
-//			shipRepository.save(new Ship(gamePlayer1, "Carrier", Arrays.asList("C4", "D4", "E4", "F4", "G4")));
-//			shipRepository.save(new Ship(gamePlayer1, "Battleship", Arrays.asList("E6", "E7", "E8", "E9")));
-//			shipRepository.save(new Ship(gamePlayer1, "Submarine", Arrays.asList("G1", "H1", "I1")));
-//			shipRepository.save(new Ship(gamePlayer1, "Destroyer", Arrays.asList("J5", "J6", "J7")));
-//			shipRepository.save(new Ship(gamePlayer1, "Patrol Boat", Arrays.asList("H10", "I10")));
-//
-//			shipRepository.save(new Ship(gamePlayer2, "Carrier", Arrays.asList("H5", "H6", "H7", "H8", "H9")));
-//			shipRepository.save(new Ship(gamePlayer2, "Battleship", Arrays.asList("C1", "D1", "E1", "F1")));
-//			shipRepository.save(new Ship(gamePlayer2, "Submarine", Arrays.asList("A5", "A6", "A7")));
-//			shipRepository.save(new Ship(gamePlayer2, "Destroyer", Arrays.asList("A10", "B10", "C10")));
-//			shipRepository.save(new Ship(gamePlayer2, "Patrol Boat", Arrays.asList("J2", "J3")));
+			shipRepository.save(new Ship(gamePlayer1, "Carrier", Arrays.asList("C4", "D4", "E4", "F4", "G4")));
+			shipRepository.save(new Ship(gamePlayer1, "Battleship", Arrays.asList("E6", "E7", "E8", "E9")));
+			shipRepository.save(new Ship(gamePlayer1, "Submarine", Arrays.asList("G1", "H1", "I1")));
+			shipRepository.save(new Ship(gamePlayer1, "Destroyer", Arrays.asList("J5", "J6", "J7")));
+			shipRepository.save(new Ship(gamePlayer1, "Patrol Boat", Arrays.asList("H10", "I10")));
 
-//			shipRepository.save(new Ship(gamePlayer3, "Carrier", Arrays.asList("F3", "G3", "H3", "I3", "J3")));
-//			shipRepository.save(new Ship(gamePlayer3, "Battleship", Arrays.asList("D6", "D7", "D8", "D9")));
-//			shipRepository.save(new Ship(gamePlayer3, "Submarine", Arrays.asList("C2", "D2", "E2")));
-//			shipRepository.save(new Ship(gamePlayer3, "Destroyer", Arrays.asList("J5", "J6", "J7")));
-//			shipRepository.save(new Ship(gamePlayer3, "Patrol Boat", Arrays.asList("F8", "G8")));
-//
-//			shipRepository.save(new Ship(gamePlayer4, "Carrier", Arrays.asList("F6", "F7", "F8", "F9", "F10")));
-//			shipRepository.save(new Ship(gamePlayer4, "Battleship", Arrays.asList("E2", "F2", "G2", "H2")));
-//			shipRepository.save(new Ship(gamePlayer4, "Submarine", Arrays.asList("C3", "C4", "C5")));
-//			shipRepository.save(new Ship(gamePlayer4, "Destroyer", Arrays.asList("B8", "C8", "D8")));
-//			shipRepository.save(new Ship(gamePlayer4, "Patrol Boat", Arrays.asList("I5", "I6")));
-//
-//			shipRepository.save(new Ship(gamePlayer5, "Carrier", Arrays.asList("F1", "G1", "H1", "I1", "J1")));
-//			shipRepository.save(new Ship(gamePlayer5, "Battleship", Arrays.asList("A4", "A5", "A6", "A7")));
-//			shipRepository.save(new Ship(gamePlayer5, "Submarine", Arrays.asList("A1", "B1", "C1")));
-//			shipRepository.save(new Ship(gamePlayer5, "Destroyer", Arrays.asList("H2", "H3", "H4")));
-//			shipRepository.save(new Ship(gamePlayer5, "Patrol Boat", Arrays.asList("C10", "D10")));
-//
-//			shipRepository.save(new Ship(gamePlayer6, "Carrier", Arrays.asList("J1", "J2", "J3", "J4", "J5")));
-//			shipRepository.save(new Ship(gamePlayer6, "Battleship", Arrays.asList("C3", "D3", "E3", "F3")));
-//			shipRepository.save(new Ship(gamePlayer6, "Submarine", Arrays.asList("A1", "A2", "A3")));
-//			shipRepository.save(new Ship(gamePlayer6, "Destroyer", Arrays.asList("E9", "F9", "G9")));
-//			shipRepository.save(new Ship(gamePlayer6, "Patrol Boat", Arrays.asList("F5", "F6")));
-//
-//			shipRepository.save(new Ship(gamePlayer7, "Carrier", Arrays.asList("E9", "F9", "G9", "H9", "I9")));
-//			shipRepository.save(new Ship(gamePlayer7, "Battleship", Arrays.asList("E2", "E3", "E4", "E5")));
-//			shipRepository.save(new Ship(gamePlayer7, "Submarine", Arrays.asList("G4", "H4", "I4")));
-//			shipRepository.save(new Ship(gamePlayer7, "Destroyer", Arrays.asList("J1", "J2", "J3")));
-//			shipRepository.save(new Ship(gamePlayer7, "Patrol Boat", Arrays.asList("F8", "G8")));
-//
-//			shipRepository.save(new Ship(gamePlayer8, "Carrier", Arrays.asList("G3", "G4", "G5", "G6", "G7")));
-//			shipRepository.save(new Ship(gamePlayer8, "Battleship", Arrays.asList("E1", "F1", "G1", "H1")));
-//			shipRepository.save(new Ship(gamePlayer8, "Submarine", Arrays.asList("E8", "E9", "E10")));
-//			shipRepository.save(new Ship(gamePlayer8, "Destroyer", Arrays.asList("A6", "B6", "C6")));
-//			shipRepository.save(new Ship(gamePlayer8, "Patrol Boat", Arrays.asList("I2", "I3")));
-//
-//			shipRepository.save(new Ship(gamePlayer9, "Carrier", Arrays.asList("F3", "G3", "H3", "I3", "J3")));
-//			shipRepository.save(new Ship(gamePlayer9, "Battleship", Arrays.asList("A7", "A8", "A9", "A10")));
-//			shipRepository.save(new Ship(gamePlayer9, "Submarine", Arrays.asList("C5", "D5", "E5")));
-//			shipRepository.save(new Ship(gamePlayer9, "Destroyer", Arrays.asList("I5", "I6", "I7")));
-//			shipRepository.save(new Ship(gamePlayer9, "Patrol Boat", Arrays.asList("A1", "B1")));
-//
-//			shipRepository.save(new Ship(gamePlayer10, "Carrier", Arrays.asList("A1", "A2", "A3", "A4", "A5")));
-//			shipRepository.save(new Ship(gamePlayer10, "Battleship", Arrays.asList("F9", "G9", "H9", "I9")));
-//			shipRepository.save(new Ship(gamePlayer10, "Submarine", Arrays.asList("D4", "D5", "D6")));
-//			shipRepository.save(new Ship(gamePlayer10, "Destroyer", Arrays.asList("D10", "E10", "F10")));
-//			shipRepository.save(new Ship(gamePlayer10, "Patrol Boat", Arrays.asList("I1", "I2")));
-//
-//			shipRepository.save(new Ship(gamePlayer11, "Carrier", Arrays.asList("B2", "C2", "D2", "E2", "F2")));
-//			shipRepository.save(new Ship(gamePlayer11, "Battleship", Arrays.asList("B7", "B8", "B9", "B10")));
-//			shipRepository.save(new Ship(gamePlayer11, "Submarine", Arrays.asList("D4", "E4", "F4")));
-//			shipRepository.save(new Ship(gamePlayer11, "Destroyer", Arrays.asList("J3", "J4", "J5")));
-//			shipRepository.save(new Ship(gamePlayer11, "Patrol Boat", Arrays.asList("G4", "H4")));
+			shipRepository.save(new Ship(gamePlayer2, "Carrier", Arrays.asList("H5", "H6", "H7", "H8", "H9")));
+			shipRepository.save(new Ship(gamePlayer2, "Battleship", Arrays.asList("C1", "D1", "E1", "F1")));
+			shipRepository.save(new Ship(gamePlayer2, "Submarine", Arrays.asList("A5", "A6", "A7")));
+			shipRepository.save(new Ship(gamePlayer2, "Destroyer", Arrays.asList("A10", "B10", "C10")));
+			shipRepository.save(new Ship(gamePlayer2, "Patrol Boat", Arrays.asList("J2", "J3")));
 
-//			shipRepository.save(new Ship(gamePlayer12, "Carrier", Arrays.asList("G4", "G5", "G6", "G7", "G8")));
-//			shipRepository.save(new Ship(gamePlayer12, "Battleship", Arrays.asList("E3", "F3", "G3", "H3")));
-//			shipRepository.save(new Ship(gamePlayer12, "Submarine", Arrays.asList("I1", "I2", "I3")));
-//			shipRepository.save(new Ship(gamePlayer12, "Destroyer", Arrays.asList("B6", "C6", "D6")));
-//			shipRepository.save(new Ship(gamePlayer12, "Patrol Boat", Arrays.asList("H7", "H8")));
+			shipRepository.save(new Ship(gamePlayer3, "Carrier", Arrays.asList("F3", "G3", "H3", "I3", "J3")));
+			shipRepository.save(new Ship(gamePlayer3, "Battleship", Arrays.asList("D6", "D7", "D8", "D9")));
+			shipRepository.save(new Ship(gamePlayer3, "Submarine", Arrays.asList("C2", "D2", "E2")));
+			shipRepository.save(new Ship(gamePlayer3, "Destroyer", Arrays.asList("J5", "J6", "J7")));
+			shipRepository.save(new Ship(gamePlayer3, "Patrol Boat", Arrays.asList("F8", "G8")));
 
-//			shipRepository.save(new Ship(gamePlayer13, "Carrier", Arrays.asList("E10", "F10", "G10", "H10", "I10")));
-//			shipRepository.save(new Ship(gamePlayer13, "Battleship", Arrays.asList("D7", "D8", "D9", "D10")));
-//			shipRepository.save(new Ship(gamePlayer13, "Submarine", Arrays.asList("A9", "B9", "C9")));
-//			shipRepository.save(new Ship(gamePlayer13, "Destroyer", Arrays.asList("I7", "I8", "I9")));
-//			shipRepository.save(new Ship(gamePlayer13, "Patrol Boat", Arrays.asList("F1", "G1")));
+			shipRepository.save(new Ship(gamePlayer4, "Carrier", Arrays.asList("F6", "F7", "F8", "F9", "F10")));
+			shipRepository.save(new Ship(gamePlayer4, "Battleship", Arrays.asList("E2", "F2", "G2", "H2")));
+			shipRepository.save(new Ship(gamePlayer4, "Submarine", Arrays.asList("C3", "C4", "C5")));
+			shipRepository.save(new Ship(gamePlayer4, "Destroyer", Arrays.asList("B8", "C8", "D8")));
+			shipRepository.save(new Ship(gamePlayer4, "Patrol Boat", Arrays.asList("I5", "I6")));
+
+			shipRepository.save(new Ship(gamePlayer5, "Carrier", Arrays.asList("F1", "G1", "H1", "I1", "J1")));
+			shipRepository.save(new Ship(gamePlayer5, "Battleship", Arrays.asList("A4", "A5", "A6", "A7")));
+			shipRepository.save(new Ship(gamePlayer5, "Submarine", Arrays.asList("A1", "B1", "C1")));
+			shipRepository.save(new Ship(gamePlayer5, "Destroyer", Arrays.asList("H2", "H3", "H4")));
+			shipRepository.save(new Ship(gamePlayer5, "Patrol Boat", Arrays.asList("C10", "D10")));
+
+			shipRepository.save(new Ship(gamePlayer6, "Carrier", Arrays.asList("J1", "J2", "J3", "J4", "J5")));
+			shipRepository.save(new Ship(gamePlayer6, "Battleship", Arrays.asList("C3", "D3", "E3", "F3")));
+			shipRepository.save(new Ship(gamePlayer6, "Submarine", Arrays.asList("A1", "A2", "A3")));
+			shipRepository.save(new Ship(gamePlayer6, "Destroyer", Arrays.asList("E9", "F9", "G9")));
+			shipRepository.save(new Ship(gamePlayer6, "Patrol Boat", Arrays.asList("F5", "F6")));
+
+			shipRepository.save(new Ship(gamePlayer7, "Carrier", Arrays.asList("E9", "F9", "G9", "H9", "I9")));
+			shipRepository.save(new Ship(gamePlayer7, "Battleship", Arrays.asList("E2", "E3", "E4", "E5")));
+			shipRepository.save(new Ship(gamePlayer7, "Submarine", Arrays.asList("G4", "H4", "I4")));
+			shipRepository.save(new Ship(gamePlayer7, "Destroyer", Arrays.asList("J1", "J2", "J3")));
+			shipRepository.save(new Ship(gamePlayer7, "Patrol Boat", Arrays.asList("F8", "G8")));
+
+			shipRepository.save(new Ship(gamePlayer8, "Carrier", Arrays.asList("G3", "G4", "G5", "G6", "G7")));
+			shipRepository.save(new Ship(gamePlayer8, "Battleship", Arrays.asList("E1", "F1", "G1", "H1")));
+			shipRepository.save(new Ship(gamePlayer8, "Submarine", Arrays.asList("E8", "E9", "E10")));
+			shipRepository.save(new Ship(gamePlayer8, "Destroyer", Arrays.asList("A6", "B6", "C6")));
+			shipRepository.save(new Ship(gamePlayer8, "Patrol Boat", Arrays.asList("I2", "I3")));
+
+			shipRepository.save(new Ship(gamePlayer9, "Carrier", Arrays.asList("F3", "G3", "H3", "I3", "J3")));
+			shipRepository.save(new Ship(gamePlayer9, "Battleship", Arrays.asList("A7", "A8", "A9", "A10")));
+			shipRepository.save(new Ship(gamePlayer9, "Submarine", Arrays.asList("C5", "D5", "E5")));
+			shipRepository.save(new Ship(gamePlayer9, "Destroyer", Arrays.asList("I5", "I6", "I7")));
+			shipRepository.save(new Ship(gamePlayer9, "Patrol Boat", Arrays.asList("A1", "B1")));
+
+			shipRepository.save(new Ship(gamePlayer10, "Carrier", Arrays.asList("A1", "A2", "A3", "A4", "A5")));
+			shipRepository.save(new Ship(gamePlayer10, "Battleship", Arrays.asList("F9", "G9", "H9", "I9")));
+			shipRepository.save(new Ship(gamePlayer10, "Submarine", Arrays.asList("D4", "D5", "D6")));
+			shipRepository.save(new Ship(gamePlayer10, "Destroyer", Arrays.asList("D10", "E10", "F10")));
+			shipRepository.save(new Ship(gamePlayer10, "Patrol Boat", Arrays.asList("I1", "I2")));
+
+			shipRepository.save(new Ship(gamePlayer11, "Carrier", Arrays.asList("B2", "C2", "D2", "E2", "F2")));
+			shipRepository.save(new Ship(gamePlayer11, "Battleship", Arrays.asList("B7", "B8", "B9", "B10")));
+			shipRepository.save(new Ship(gamePlayer11, "Submarine", Arrays.asList("D4", "E4", "F4")));
+			shipRepository.save(new Ship(gamePlayer11, "Destroyer", Arrays.asList("J3", "J4", "J5")));
+			shipRepository.save(new Ship(gamePlayer11, "Patrol Boat", Arrays.asList("G4", "H4")));
+
+			shipRepository.save(new Ship(gamePlayer12, "Carrier", Arrays.asList("G4", "G5", "G6", "G7", "G8")));
+			shipRepository.save(new Ship(gamePlayer12, "Battleship", Arrays.asList("E3", "F3", "G3", "H3")));
+			shipRepository.save(new Ship(gamePlayer12, "Submarine", Arrays.asList("I1", "I2", "I3")));
+			shipRepository.save(new Ship(gamePlayer12, "Destroyer", Arrays.asList("B6", "C6", "D6")));
+			shipRepository.save(new Ship(gamePlayer12, "Patrol Boat", Arrays.asList("H7", "H8")));
+
+			shipRepository.save(new Ship(gamePlayer13, "Carrier", Arrays.asList("E10", "F10", "G10", "H10", "I10")));
+			shipRepository.save(new Ship(gamePlayer13, "Battleship", Arrays.asList("D7", "D8", "D9", "D10")));
+			shipRepository.save(new Ship(gamePlayer13, "Submarine", Arrays.asList("A9", "B9", "C9")));
+			shipRepository.save(new Ship(gamePlayer13, "Destroyer", Arrays.asList("I7", "I8", "I9")));
+			shipRepository.save(new Ship(gamePlayer13, "Patrol Boat", Arrays.asList("F1", "G1")));
 //
 //			salvoRepository.save(new Salvo(gamePlayer1, 1, Arrays.asList("B1", "B7", "E6", "F3", "F8")));
 //			salvoRepository.save(new Salvo(gamePlayer2, 1, Arrays.asList("B2", "B8", "E5", "H2", "J8")));
