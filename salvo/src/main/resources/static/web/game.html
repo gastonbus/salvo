@@ -51,6 +51,21 @@
                     <div class="underTableText">
                         <p>This is your ship's board</p>
                     </div>
+                    <div v-if="playerRemainingShips.length != 0 && shipsSetted">
+                        <p>Your ships remaining:</p>
+                        <table class="remainingShipsTable">
+                            <tbody>
+                                <tr v-for="playerRemainingShip in playerRemainingShips">
+                                    <td>{{playerRemainingShip}}:</td>
+                                    <td><img v-bind:src="'img/' + playerRemainingShip.toLowerCase().replace(' ', '') + 'hor.png'"
+                                            alt=""
+                                            v-bind:class="playerRemainingShip.toLowerCase().replace(' ', '') + 'Image'">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
                     <div v-if="shipsSetted == false">
                         <div>
                             <p class="text-start">Please, locate each ship and then press the "Save ships locations"
@@ -79,13 +94,12 @@
                             <button class="btn btn-info" v-on:click="saveShips(gamePlayerId)">Save ship
                                 locations</button>
                         </div>
-
+    
                     </div>
                 </div>
                 <div class="col-2 vs">
                     <h1 id="gameTitle">vs</h1>
                 </div>
-
                 <div class="col-5">
                     <table class="battleTable">
                         <thead>
@@ -106,13 +120,25 @@
                     </table>
                     <div class="underTableText">
                         <p>This is your salvo's board</p>
-                    </div>
-                    <div>
-                        <p>To change the shot position just press on it again.</p>
+                        <hr>
+                        <p>To remove selection just press on it again.</p>
                     </div>
                     <div class="d-grid gap-2">
-                        <button class="btn btn-danger btn-lg" v-on:click="saveSalvo(gamePlayerId)">****** Shoot!
-                            ******</button>
+                        <button class="btn btn-danger btn-lg" v-on:click="saveSalvo(gamePlayerId)">FIRE!</button>
+                    </div>
+                    <div v-if="opponentRemainingShips.length != 0 && shipsSetted">
+                        <p>Opponent ships remaining:</p>
+                        <table class="remainingShipsTable">
+                            <tbody>
+                                <tr v-for="opponentRemainingShip in opponentRemainingShips">
+                                    <td>{{opponentRemainingShip}}:</td>
+                                    <td><img v-bind:src="'img/' + opponentRemainingShip.toLowerCase().replace(' ', '') + 'hor.png'"
+                                            alt=""
+                                            v-bind:class="opponentRemainingShip.toLowerCase().replace(' ', '') + 'Image'">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

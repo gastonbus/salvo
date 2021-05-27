@@ -22,6 +22,9 @@ var app = new Vue({
             turn: 0,
             locations: []
         },
+        hits: [],
+        playerRemainingShips: ["Carrier", "Battleship", "Submarine", "Destroyer", "Patrol Boat"],
+        opponentRemainingShips: ["Carrier", "Battleship", "Submarine", "Destroyer", "Patrol Boat"],
     },
     methods: {
         savePlayers: function () {
@@ -40,10 +43,19 @@ var app = new Vue({
         },
         showFiredSalvoes: function () {
             app.playerASalvoes = app.game.salvoes.filter(elem => elem.playerId == app.players.playerA.id);
+            app.game.hits.forEach(hit => {
+                hit.locationsWithImpact.forEach(location => {
+                    app.hits.push(location);
+                })
+            })
             app.playerASalvoes.forEach(salvo => {
                 salvo.locations.forEach(location => {
                     document.getElementById('salvoes-' + location).innerText = salvo.turn;
-                    document.getElementById('salvoes-' + location).classList.add('firedSalvoes');
+                    if (app.hits.includes(location)) {
+                        document.getElementById('salvoes-' + location).classList.add('successfulFiredSalvoes');                      
+                    } else {
+                        document.getElementById('salvoes-' + location).classList.add('firedSalvoes');                      
+                    }
                 })
             })
         },
@@ -60,6 +72,39 @@ var app = new Vue({
                         }
                 })
             })
+        },
+        getOpponentRemainingShips: function() {
+            var lastTurn = 0;
+            app.game.sunkShips.forEach(sunkShip => {
+                if(sunkShip.turn > lastTurn) {
+                    lastTurn = sunkShip.turn;
+                }
+            });
+            console.log(lastTurn);
+            if (app.game.sunkShips.length > 0) {
+                app.game.sunkShips.find(sunk => sunk.turn == lastTurn).ships.forEach(ship => {
+                    app.opponentRemainingShips = app.opponentRemainingShips.filter(s => s.toLowerCase().replace(" ", "") != ship.type);
+                    ship.locations.forEach(location => {
+                        document.getElementById('salvoes-' + location).className = 'commpletelySunk';
+                    })
+                });
+            }
+        },
+        getPlayerRemainingShips: function() {
+            var lastTurn = 0;
+            app.game.opponentSunks.forEach(opponentSunkShip => {
+                if(opponentSunkShip.turn > lastTurn) {
+                    lastTurn = opponentSunkShip.turn;
+                }
+            });
+            if (app.game.opponentSunks.length > 0) {
+                app.game.opponentSunks.find(sunk => sunk.turn == lastTurn).ships.forEach(ship => {
+                    app.playerRemainingShips = app.playerRemainingShips.filter(s => s.toLowerCase().replace(" ", "") != ship.type);
+                    ship.locations.forEach(location => {
+                        document.getElementById('ships-' + location).className = 'commpletelySunk';
+                    });
+                });
+            }
         },
         getGamePlayerId: function () {
             const urlParams = new URLSearchParams(window.location.search);
@@ -81,12 +126,15 @@ var app = new Vue({
                     app.locateShips();
                     app.showFiredSalvoes();
                     app.showOpponentSalvoes();
+                    app.getPlayerRemainingShips();
+                    app.getOpponentRemainingShips();
+
                 })
                 .catch(function (error) {
                     // called when an error occurs anywhere in the chain
                     alert("error en la petición de los datos al servidor");
                     console.log(error);
-                    window.location.href = "games.html";
+                    // window.location.href = "games.html";
                 })
         },
         //generates an array (app.shipsPrevisualizationArray) with the Cell that have to be painted.
@@ -212,8 +260,6 @@ var app = new Vue({
                         contentType: "application/json"
                     })
                     .done(function (response, status, jqXHR) {
-                        //recargar pagina (si es que está en game.html, y sino ir a game.html?gp=xx)
-                        //tener cuidado de que tambien tiene que haber terminado de cargar sus ships el oponente
                         window.location.href = "game.html?gp=" + gamePlayerId;
                     })
                     .fail(function (jqXHR, status, httpError) {
@@ -234,7 +280,6 @@ var app = new Vue({
                     available = false
                 }
             })
-
             return available;
         },
         showSalvoLocationPrevisualization: function (event) {

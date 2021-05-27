@@ -1,3 +1,21 @@
+Task: "Add hits and sinks":
+    carrierPosition = [];
+    battleshipPosition = [];
+    submarinePosition = [];
+    destroyerPosition = [];
+    patrolboatPosition = [];
+    salvos = [];
+
+    
+
+    comparar para cada barco si todas sus posiciones se encuentran en el arreglo 'salvos'
+
+
+
+
+
+
+Task "Add firing salvos":
 Variables necesarias:
 salvoForPost: {
     turn: 0,

@@ -6,6 +6,10 @@ body {
     font-size: 20px;
 }
 
+.container {
+    background-color: rgba(0, 0, 0, 0.300);
+}
+
 ol {
     list-style-type: none;
     font-weight: bolder;
@@ -120,30 +124,46 @@ h1 {
 .firedSalvoes {
     font-size: 16px;
     color: rgb(255, 255, 255) !important; 
-    /* font-weight: bolder; */
     background-image: url('../img/water1.gif') !important;
-    background-size: contain;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.successfulFiredSalvoes {
+    font-size: 16px;
+    color: rgb(0, 0, 0) !important;
+    background-image: url('../img/flame2.gif') !important;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 }
 
 .opponentSalvoes {
-    /* background-color: rgb(0, 0, 0); */
-    /* margin: 2px 2px 2px 2px; */
     font-size: 16px;
     color: white;
     background-image: url('../img/water1.gif') !important;
-    background-size: contain;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 }
 
 .opponentSuccessfulShot {
-    /* background-color: gray; */
-    background-image: url('../img/flame2.gif') !important;
-    background-size: contain;
-    /* margin: 2px 2px 2px 2px; */
-    font-size: 14px;
+    font-size: 16px;
     color: rgb(0, 0, 0) !important;
-    font-weight: bold;
-    background-position: center;
+    background-image: url('../img/flame2.gif') !important;
     background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.commpletelySunk {
+    color: black !important;
+    background-image: url('../img/redcross.png') !important;
+    background-color: white;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 }
 
 .sideButton {
@@ -258,5 +278,39 @@ input[type="radio"] {
 }
 
 .shot {
-    background-color: rgb(0, 0, 255);
+    background-color: #0dcaf0;
+    background-image: url(../img/sight2.gif);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 }
+
+.remainingShipsTable {
+    background-color: rgba(0, 0, 0, 0.3);
+    margin-top: 15px;
+    width: 100%;
+    text-align: center;
+    border: none;
+    color: rgb(255, 255, 255);
+}
+
+.carrierImage {
+    width: 160px;
+}
+
+.battleshipImage {
+    width: 128px;
+}
+
+.submarineImage {
+    width: 96px;
+}
+
+.destroyerImage {
+    width: 96px;
+}
+
+.patrolboatImage {
+    width: 64px;
+}
+

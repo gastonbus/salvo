@@ -159,7 +159,7 @@ public class SalvoController {
 			Player authenticatedPlayer = playerRepository.findByUserName(authentication.getName());
 			Optional<GamePlayer> optGamePlayer = gamePlayerRepository.findById(gamePlayerId);
 			return optGamePlayer.map(gp -> {
-				if(authenticatedPlayer.getId() == gp.getPlayer().getId()) { //Verify if this player is playing the game requested.
+				if(authenticatedPlayer.getId() == gp.getPlayer().getId()) {
 					return new ResponseEntity<>(makeGameViewDTO(gp), HttpStatus.OK);
 				} else {
 					return new ResponseEntity<>(makeMap("error", "This is not your game. Don't try to cheat!"), HttpStatus.FORBIDDEN);
@@ -259,9 +259,8 @@ public class SalvoController {
 		}
 
 		//Validate if the opponent has shot his salvo and it is the turn of the player.
-		Optional<GamePlayer> opponent = gamePlayer.getGame().getGamePlayers().stream().filter(elem -> elem.getId() != gamePlayer.getId()).findFirst();
-		if (opponent.isPresent()) {
-			if (gamePlayer.getSalvoes().size() - opponent.get().getSalvoes().size() >= 1) {
+		if (gamePlayer.getOpponent().isPresent()) {
+			if (gamePlayer.getSalvoes().size() - gamePlayer.getOpponent().get().getSalvoes().size() >= 1) {
 				return new ResponseEntity<>(makeMap("error", "You must wait for your opponent to make his shots."), HttpStatus.FORBIDDEN);
 			}
 		} else {
@@ -278,8 +277,6 @@ public class SalvoController {
 
 		return new ResponseEntity<>(makeMap("gpid", gamePlayer.getId()), HttpStatus.CREATED);
 	}
-
-
 
 	public Map<String, Object> makeGamesDTO(Game game) {
 		Map<String, Object> dto = new LinkedHashMap<>();
@@ -305,6 +302,10 @@ public class SalvoController {
         dto.put("gamePlayers", gamePlayer.getGame().getGamePlayers().stream().map(this::makeGamePlayerDTO).collect(toSet()));
         dto.put("ships", gamePlayer.getShips().stream().map(this::makeShipDTO).collect(toSet()));
         dto.put("salvoes", gamePlayer.getGame().getGamePlayers().stream().flatMap(elem -> elem.getSalvoes().stream().map(this::makeSalvoDTO)));
+        dto.put("hits", gamePlayer.getSalvoes().stream().map(this::makeHitsDTO));
+		dto.put("sunkShips", gamePlayer.getSalvoes().stream().map(this::makeSunkShipsDTO));
+		dto.put("opponentHits", gamePlayer.getOpponent().map(gp -> gp.getSalvoes().stream().map(this::makeHitsDTO).collect(toList())).orElse(new ArrayList<>()));
+		dto.put("opponentSunks", gamePlayer.getOpponent().map(gp -> gp.getSalvoes().stream().map(this::makeSunkShipsDTO).collect(toList())).orElse(new ArrayList<>()));
         return dto;
     }
 
@@ -342,7 +343,22 @@ public class SalvoController {
         return dto;
     }
 
-    //Function to help find if the user is authenticated or not
+	//game_view/gamePlayer/hits
+	private Map<String, Object> makeHitsDTO(Salvo salvo) {
+		Map<String, Object> dto = new LinkedHashMap<>();
+		dto.put("turn", salvo.getTurn());
+		dto.put("locationsWithImpact", salvo.getHits());
+		return dto;
+	}
+
+	private Map<String, Object> makeSunkShipsDTO(Salvo salvo) {
+		Map<String, Object> dto = new LinkedHashMap<>();
+		dto.put("turn", salvo.getTurn());
+		dto.put("ships", salvo.getSunkShips().stream().map(this::makeShipDTO));
+		return dto;
+	}
+
+	//Function to help find if the user is authenticated or not
 	private boolean isGuest(Authentication authentication) {
 		return authentication == null || authentication instanceof AnonymousAuthenticationToken;
 	}

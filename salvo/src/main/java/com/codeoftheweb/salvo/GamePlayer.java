@@ -1,6 +1,9 @@
 package com.codeoftheweb.salvo;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -94,5 +97,7 @@ public class GamePlayer {
         this.salvoes = salvoes;
     }
 
-
+	public Optional<GamePlayer> getOpponent() {
+		return this.getGame().getGamePlayers().stream().filter(elem -> elem.getId() != this.getId()).findFirst();
+	}
 }
