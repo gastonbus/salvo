@@ -29,6 +29,13 @@
                             class="userName text-danger" v-else>{{players.playerB.email}}</span></h1>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-12">
+                    <P v-if="game.gameStatus == 'PLACE_SHIPS'">Please, locate your ships.</P>
+                    <p v-else-if="game.gameStatus == 'PLACE_SALVOES'">You can fire your salvo!</p>
+                    <P v-else-if="game.gameStatus == 'WAIT_OPPONENT'">Wait. It's your opponent's turn</P>
+                </div>
+            </div>
             <div class="row justify-content-between align-items-start">
                 <div class="col-5">
                     <table class="battleTable">
@@ -124,7 +131,7 @@
                         <p>To remove selection just press on it again.</p>
                     </div>
                     <div class="d-grid gap-2">
-                        <button class="btn btn-danger btn-lg" v-on:click="saveSalvo(gamePlayerId)">FIRE!</button>
+                        <button class="btn btn-danger btn-lg" v-on:click="saveSalvo(gamePlayerId)" v-if="game.gameStatus == 'PLACE_SALVOES'">FIRE!</button>
                     </div>
                     <div v-if="opponentRemainingShips.length != 0 && shipsSetted">
                         <p>Opponent ships remaining:</p>

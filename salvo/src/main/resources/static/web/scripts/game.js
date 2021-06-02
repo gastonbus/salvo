@@ -80,7 +80,6 @@ var app = new Vue({
                     lastTurn = sunkShip.turn;
                 }
             });
-            console.log(lastTurn);
             if (app.game.sunkShips.length > 0) {
                 app.game.sunkShips.find(sunk => sunk.turn == lastTurn).ships.forEach(ship => {
                     app.opponentRemainingShips = app.opponentRemainingShips.filter(s => s.toLowerCase().replace(" ", "") != ship.type);
@@ -111,7 +110,7 @@ var app = new Vue({
             this.gamePlayerId = urlParams.get('gp');
         },
         getGameData: function () {
-            fetch('http://localhost:8080/api/game_view/' + this.gamePlayerId)
+            fetch('/api/game_view/' + this.gamePlayerId)
                 .then(response => {
                     if (response.ok) {
                         return response.json();
@@ -121,13 +120,14 @@ var app = new Vue({
                 })
                 .then(data => {
                     app.game = data;
-                    app.shipsSetted = app.game.ships.length > 0;
+                    app.shipsSetted = app.game.ships.length;
                     app.savePlayers();
                     app.locateShips();
                     app.showFiredSalvoes();
                     app.showOpponentSalvoes();
                     app.getPlayerRemainingShips();
                     app.getOpponentRemainingShips();
+                    app.reload();
 
                 })
                 .catch(function (error) {
@@ -283,7 +283,7 @@ var app = new Vue({
             return available;
         },
         showSalvoLocationPrevisualization: function (event) {
-            if (app.shipsSetted) {
+            if (app.shipsSetted && app.game.gameStatus == 'PLACE_SALVOES') {
                 if (app.isSalvoLocationAvailable(event.target.id.replace('salvoes-', ""))) {
                     if (app.salvoForPost.locations.length < 5) {
                         document.getElementById(event.target.id).classList.add("shotPrev");
@@ -297,7 +297,7 @@ var app = new Vue({
         },
         setSalvoLocation: function (event) {
             var currentCell = event.target.id.replace('salvoes-', "");
-            if (app.shipsSetted) {
+            if (app.shipsSetted && app.game.gameStatus == 'PLACE_SALVOES') {
                 if (app.salvoForPost.locations.includes(currentCell)) {
                     document.getElementById(event.target.id).classList.remove("shot");
                     app.salvoForPost.locations.splice(app.salvoForPost.locations.indexOf(currentCell), 1);
@@ -323,8 +323,6 @@ var app = new Vue({
                         contentType: "application/json"
                     })
                     .done(function (response, status, jqXHR) {
-                        //recargar pagina (si es que está en game.html, y sino ir a game.html?gp=xx)
-                        //tener cuidado de que tambien tiene que haber terminado de cargar sus ships el oponente
                         window.location.href = "game.html?gp=" + gamePlayerId;
                     })
                     .fail(function (jqXHR, status, httpError) {
@@ -340,6 +338,11 @@ var app = new Vue({
                     app.authenticatedPlayer = null;
                     window.location.href = "games.html";
                 })
+        },
+        reload: function () {
+            if (this.game.gameStatus == "WAIT_OPPONENT") {
+                setTimeout(this.getGameData(), 2000);
+            }
         },
     },
     mounted: function () {

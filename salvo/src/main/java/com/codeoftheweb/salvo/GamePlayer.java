@@ -1,14 +1,12 @@
 package com.codeoftheweb.salvo;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+
+import static java.util.stream.Collectors.toList;
 
 @Entity
 public class GamePlayer {
@@ -100,4 +98,48 @@ public class GamePlayer {
 	public Optional<GamePlayer> getOpponent() {
 		return this.getGame().getGamePlayers().stream().filter(elem -> elem.getId() != this.getId()).findFirst();
 	}
+
+	public GameStatus gameStatus() {
+		if (this.getShips().isEmpty()) {
+			return GameStatus.PLACE_SHIPS;
+		} else {
+			if (this.getOpponent().isPresent()) {
+				if (this.getOpponent().get().getShips().isEmpty()) {
+					return GameStatus.WAIT_OPPONENT;
+				} else {
+					if (this.getSalvoes().stream().noneMatch(em -> em.getTurn() == this.getSalvoes().size())) {
+						return GameStatus.PLACE_SALVOES;
+					} else {
+						if (this.getOpponent().get().getSalvoes().stream().noneMatch(em -> em.getTurn() == this.getSalvoes().size())) {
+							return GameStatus.WAIT_OPPONENT;
+						} else if(this.getSalvoes().size() == this.getOpponent().get().getSalvoes().size()){
+							List<Long> shipsSunkByPlayer = this.getSalvoes().stream().filter(x -> x.getTurn() == this.getSalvoes().size()).flatMap(x -> x.getSunkShips().stream()).map(Ship::getId).collect(toList());
+							List<Long> shipsSunkByOpponent = new ArrayList<>();
+
+							if (this.getOpponent().isPresent()) {
+								shipsSunkByOpponent = this.getOpponent().get().getSalvoes().stream().filter(x -> x.getTurn() == this.getSalvoes().size()).flatMap(x -> x.getSunkShips().stream()).map(Ship::getId).collect(toList());
+							}
+
+							if (shipsSunkByPlayer.size() == 5 && shipsSunkByOpponent.size() == 5) {
+								return GameStatus.TIE;
+							} else if ( shipsSunkByPlayer.size() == 5) {
+								return GameStatus.WIN;
+							} else if (shipsSunkByOpponent.size() == 5) {
+								return GameStatus.LOSE;
+							}else{
+								return GameStatus.PLACE_SALVOES;
+							}
+						}
+						else {
+							return GameStatus.PLACE_SALVOES;
+						}
+					}
+				}
+			}else{
+				return GameStatus.WAIT_OPPONENT;
+			}
+		}
+
+	}
+
 }

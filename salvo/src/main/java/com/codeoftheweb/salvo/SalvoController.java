@@ -33,6 +33,9 @@ public class SalvoController {
 	private SalvoRepository salvoRepository;
 
 	@Autowired
+	private ScoreRepository scoreRepository;
+
+	@Autowired
 	private PasswordEncoder passwordEncoder;
 
 	@GetMapping("/players")
@@ -258,18 +261,38 @@ public class SalvoController {
 			return new ResponseEntity<>(makeMap("error", "You've just fired all your salvoes."), HttpStatus.FORBIDDEN);
 		}
 
-		//Validate if the opponent has shot his salvo and it is the turn of the player.
-		if (gamePlayer.getOpponent().isPresent()) {
-			if (gamePlayer.getSalvoes().size() - gamePlayer.getOpponent().get().getSalvoes().size() >= 1) {
-				return new ResponseEntity<>(makeMap("error", "You must wait for your opponent to make his shots."), HttpStatus.FORBIDDEN);
-			}
-		} else {
-			return new ResponseEntity<>(makeMap("error", "There is no opponent yet."), HttpStatus.FORBIDDEN);
-		}
-
 		//Validate if the request contains 5 shots.
 		if (salvo.getLocations().size() != 5) {
 			return new ResponseEntity<>(makeMap("error", "The request does not contains 5 shots."), HttpStatus.FORBIDDEN);
+		}
+
+		//Validate if the opponent has shot his salvo and it is the turn of the player.
+		if (gamePlayer.getOpponent().isEmpty()) {
+			return new ResponseEntity<>(makeMap("error", "There is no opponent yet."), HttpStatus.FORBIDDEN);
+		}
+
+		if (gamePlayer.getSalvoes().size() - gamePlayer.getOpponent().get().getSalvoes().size() >= 1) {
+			return new ResponseEntity<>(makeMap("error", "You must wait for your opponent to make his shots."), HttpStatus.FORBIDDEN);
+		}
+
+		if (gamePlayer.gameStatus() == GameStatus.PLACE_SALVOES) {
+
+			Salvo actualSalvo = new Salvo(gamePlayer, salvo.getTurn(), salvo.getLocations());
+			salvoRepository.save(actualSalvo);
+
+			gamePlayer.getSalvoes().add(actualSalvo);
+
+			if (gamePlayer.gameStatus() == GameStatus.TIE) {
+				scoreRepository.save(new Score(0.5, LocalDateTime.now(), gamePlayer.getGame(), gamePlayer.getPlayer()));
+				scoreRepository.save(new Score(0.5, LocalDateTime.now(), gamePlayer.getGame(), gamePlayer.getOpponent().get().getPlayer()));
+			} else if (gamePlayer.gameStatus() == GameStatus.WIN) {
+				scoreRepository.save(new Score(1.0, LocalDateTime.now(), gamePlayer.getGame(), gamePlayer.getPlayer()));
+				scoreRepository.save(new Score(0.0, LocalDateTime.now(), gamePlayer.getGame(), gamePlayer.getOpponent().get().getPlayer()));
+			} else if (gamePlayer.gameStatus() == GameStatus.LOSE) {
+				scoreRepository.save(new Score(0.0, LocalDateTime.now(), gamePlayer.getGame(), gamePlayer.getPlayer()));
+				scoreRepository.save(new Score(1.0, LocalDateTime.now(), gamePlayer.getGame(), gamePlayer.getOpponent().get().getPlayer()));
+			}
+			return new ResponseEntity<>(makeMap("turn", salvo.getTurn()), HttpStatus.CREATED);
 		}
 
 		//Save the salvoes corresponding to the authenticated player for this turn in this game
@@ -299,6 +322,7 @@ public class SalvoController {
         Map<String, Object> dto = new LinkedHashMap<>();
         dto.put("id", gamePlayer.getGame().getId());
         dto.put("date", gamePlayer.getGame().getDateTime());
+        dto.put("gameStatus", gamePlayer.gameStatus());
         dto.put("gamePlayers", gamePlayer.getGame().getGamePlayers().stream().map(this::makeGamePlayerDTO).collect(toSet()));
         dto.put("ships", gamePlayer.getShips().stream().map(this::makeShipDTO).collect(toSet()));
         dto.put("salvoes", gamePlayer.getGame().getGamePlayers().stream().flatMap(elem -> elem.getSalvoes().stream().map(this::makeSalvoDTO)));
@@ -357,6 +381,39 @@ public class SalvoController {
 		dto.put("ships", salvo.getSunkShips().stream().map(this::makeShipDTO));
 		return dto;
 	}
+
+//	public String gameStatus(GamePlayer gamePlayer) {
+//
+//		if (this.isGameOver(gamePlayer)) {
+//			return "game over";
+//		} else {
+//			if (gamePlayer.getOpponent().isEmpty()) {
+//				return "waiting for opponent to join the game";
+//			}
+//			if (gamePlayer.getShips().isEmpty()) {
+//				return "waiting for player to place ships";
+//			}
+//			if (gamePlayer.getOpponent().get().getShips().isEmpty()) {
+//				return "waiting for opponent to place ships";
+//			}
+//			if (gamePlayer.getSalvoes().stream().filter(s -> s.getTurn() == gamePlayer.getSalvoes().size()).count() == 0) {
+//				return "waiting for player salvo";
+//			}
+//			if (gamePlayer.getOpponent().get().getSalvoes().stream().filter(x -> x.getTurn() == gamePlayer.getSalvoes().size()).count() == 0) {
+//				return "waiting for opponent salvo";
+//			}
+//			return "playing game";
+//		}
+//	}
+//
+//	Boolean isGameOver(GamePlayer gamePlayer) {
+//		List<Long> shipsSunkByOpponent = gamePlayer.getSalvoes().stream().filter(x -> x.getTurn() == gamePlayer.getSalvoes().size()).flatMap(x -> x.getSunkShips().stream()).map(Ship::getId).collect(toList());
+//		List<Long> shipsSunkByPlayer = new ArrayList<>();
+//		if (gamePlayer.getOpponent().isPresent()) {
+//			shipsSunkByPlayer = gamePlayer.getOpponent().get().getSalvoes().stream().filter(x -> x.getTurn() == gamePlayer.getOpponent().get().getSalvoes().size()).flatMap(x -> x.getSunkShips().stream()).map(Ship::getId).collect(toList());
+//		}
+//		return shipsSunkByPlayer.size() == 5 || shipsSunkByOpponent.size() == 5;
+//	}
 
 	//Function to help find if the user is authenticated or not
 	private boolean isGuest(Authentication authentication) {

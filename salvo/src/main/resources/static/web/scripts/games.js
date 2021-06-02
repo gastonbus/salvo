@@ -45,7 +45,7 @@ var app = new Vue({
             })
         },
         getScoresData: function () {
-            fetch('http://localhost:8080/api/games')
+            fetch('/api/games')
                 .then(response => response.json())
                 .then(data => {
                     app.games = data.games;
