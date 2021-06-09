@@ -158,7 +158,7 @@ public class SalvoController {
 
 		return new ResponseEntity<>(makeGameViewDTO(gamePlayer), HttpStatus.OK);
 
-		/* Otra forma de hacerlo:
+		/* Another way to do this:
 
 		if(!isGuest(authentication)) { //Verify if user is authenticated or not
 			Player authenticatedPlayer = playerRepository.findByUserName(authentication.getName());
